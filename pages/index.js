@@ -6,6 +6,7 @@ export default function Home() {
   return (
     <div>
       <Container
+        spacing={0}
         direction="column"
         style={{ minHeight: '100vh' }}
         component="main"
