@@ -11,6 +11,7 @@ export const AuthContext = React.createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [username, setusername] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const getData = async (userf) => {
     const docRef = doc(db, 'users', userf.uid);
@@ -24,13 +25,17 @@ export const AuthProvider = ({ children }) => {
       if (userfetch) {
         setUser(userfetch);
         getData(userfetch);
+        setLoading(false);
       } else {
+        console.log('else part');
+        setLoading(false);
+        console.log('no user');
       }
     });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, username, setUser }}>
+    <AuthContext.Provider value={{ user, username, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

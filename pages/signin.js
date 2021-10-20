@@ -26,21 +26,24 @@ const theme = createTheme({
 const auth = getAuth();
 
 const Signin = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
-      const uid = user.uid;
-      const uemail = user.email;
-      console.log('user signed in');
-      console.log(uid);
-      console.log(uemail);
-      router.push('/welcome');
+    if (loading) {
     } else {
-      console.log('user not signed in');
+      if (user) {
+        const uid = user.uid;
+        const uemail = user.email;
+        console.log('user signed in');
+        console.log(uid);
+        console.log(uemail);
+        router.push('/welcome');
+      } else {
+        console.log('user not signed in');
+      }
     }
-  }, []);
+  }, [loading]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -4,17 +4,20 @@ import { useRouter } from 'next/router';
 import { AuthContext } from '../firebase/auth';
 
 const Welcome = () => {
-  const { user, username, setUser } = useContext(AuthContext);
+  const { loading, user, username, setUser } = useContext(AuthContext);
   const router = useRouter();
   const auth = getAuth();
 
   useEffect(() => {
-    if (user) {
+    if (loading) {
     } else {
-      console.log('user not signed in');
-      router.push('/');
+      if (user) {
+      } else {
+        console.log('user not signed in');
+        router.push('/');
+      }
     }
-  }, []);
+  }, [loading]);
 
   const signout = () => {
     signOut(auth)
@@ -32,7 +35,7 @@ const Welcome = () => {
 
   return (
     <div>
-      {username ? (
+      {user ? (
         <>
           <h2>
             Welcome <span style={{ color: 'red' }}>{username}</span>

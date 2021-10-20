@@ -1,12 +1,11 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter();
   return (
     <div>
-      <Grid
-        spacing={0}
+      <Container
         direction="column"
         style={{ minHeight: '100vh' }}
         component="main"
@@ -42,7 +41,7 @@ export default function Home() {
             SignUp
           </Button>
         </Grid>
-      </Grid>
+      </Container>
     </div>
   );
 }
