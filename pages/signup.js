@@ -16,11 +16,15 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import { getFirestore, collection, setDoc, doc } from 'firebase/firestore';
 
 import { useRouter } from 'next/router';
 import { AuthContext } from '../firebase/auth';
+
+const provider = new GoogleAuthProvider();
 
 const db = getFirestore();
 const theme = createTheme({
