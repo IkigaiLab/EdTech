@@ -11,26 +11,29 @@ export const AuthContext = React.createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [username, setusername] = useState('');
+  const [loading, setloading] = useState(true);
 
-  const getData = async (userf) => {
-    const docRef = doc(db, 'users', userf.uid);
-    const querySnapshot = await getDoc(docRef);
-    console.log(querySnapshot.data().name);
-    setusername(querySnapshot.data().name);
-  };
+  // const getData = async (userf) => {
+  //   const docRef = doc(db, 'users', userf.uid);
+  //   const querySnapshot = await getDoc(docRef);
+  //   console.log(querySnapshot.data().name);
+  //   setusername(querySnapshot.data().name);
+  // };
 
   useEffect(() => {
     onAuthStateChanged(auth, (userfetch) => {
       if (userfetch) {
         setUser(userfetch);
-        getData(userfetch);
+        // getData(userfetch);
+        setloading(false);
       } else {
+        setloading(false);
       }
     });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, username, setUser }}>
+    <AuthContext.Provider value={{ user, username, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
