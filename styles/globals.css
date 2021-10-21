@@ -10,7 +10,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: 9999;
-  background: url('/Blok.gif') 50% 50% no-repeat rgba(255, 255, 255, 0.7);
+  background: url('/blok.gif') 50% 50% no-repeat rgba(255, 255, 255, 0.7);
 }
 .login-with-google-btn {
   transition: background-color 0.3s, box-shadow 0.3s;
