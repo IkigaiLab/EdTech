@@ -5,7 +5,7 @@ import { AuthContext } from '../firebase/auth';
 import { Button } from '@mui/material';
 
 const Welcome = () => {
-  const { user, username, setUser, loading } = useContext(AuthContext);
+  const { user, setUser, loading } = useContext(AuthContext);
   const router = useRouter();
   const auth = getAuth();
 
