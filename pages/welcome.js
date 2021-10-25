@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 
 const Welcome = () => {
   const { user, setUser, loading } = useContext(AuthContext);
+
   const router = useRouter();
   const auth = getAuth();
 
