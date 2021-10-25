@@ -31,7 +31,7 @@ import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
-function Layout(props) {
+export default function Layout(props) {
   const { user, loading } = useContext(AuthContext);
   const router = useRouter();
   const { window } = props;
@@ -230,5 +230,3 @@ function Layout(props) {
     </Box>
   );
 }
-
-export default Layout;

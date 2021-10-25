@@ -13,7 +13,7 @@ import {
   CardActions,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
+import Layout from '../components/layout';
 
 const Dashboard = () => {
   const router = useRouter();
