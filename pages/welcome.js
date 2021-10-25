@@ -2,9 +2,11 @@ import React, { useEffect, useContext } from 'react';
 import { signOut, getAuth } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../firebase/auth';
+import { Button } from '@mui/material';
 
 const Welcome = () => {
-  const { loading, user, username, setUser } = useContext(AuthContext);
+  const { user, setUser, loading } = useContext(AuthContext);
+
   const router = useRouter();
   const auth = getAuth();
 
@@ -34,13 +36,27 @@ const Welcome = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       {user ? (
         <>
+          <h1>
+            Welcome <span style={{ color: 'red' }}>{user.displayName}</span>
+          </h1>
           <h2>
-            Welcome <span style={{ color: 'red' }}>{username}</span>
+            Your email id is :{' '}
+            <span style={{ color: 'red' }}>{user.email}</span>
           </h2>
-          <button onClick={signout}>SignOut</button>
+          <Button variant="contained" sx={{ mt: 3 }} onClick={signout}>
+            SignOut
+          </Button>
         </>
       ) : (
         <h4>Loading......</h4>

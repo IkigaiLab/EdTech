@@ -10,16 +10,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../firebase/auth';
 
-const provider = new GoogleAuthProvider();
 const auth = getAuth();
 
 const theme = createTheme({
@@ -30,9 +24,10 @@ const theme = createTheme({
   },
 });
 
-const Signin = () => {
+const Forgetpassword = () => {
   const { user, loading } = useContext(AuthContext);
   const [error, seterror] = useState('');
+  const [success, setsuccess] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -53,49 +48,27 @@ const Signin = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const df = new FormData(event.currentTarget);
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
-    const password = data.get('password');
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        router.push('/welcome');
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        seterror(error.code);
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        seterror('');
+        setsuccess('Password reset email sent!');
+        alert('Password reset email sent!');
+        // ..
         event.target.reset();
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
-  };
-
-  const handleGoogleSignIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log(user);
-        router.push('/welcome');
-        // ...
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
+        setsuccess('');
         seterror(error.code);
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+        console.log(error.code);
+        console.log(error.message);
+        event.target.reset();
+        // ..
       });
   };
 
@@ -131,7 +104,7 @@ const Signin = () => {
             }}
           >
             <img
-              src="/signin.svg"
+              src="/forgotpassword.svg"
               height="550px"
               width="500px"
               style={{ maxWidth: 'calc(100% - 20px)' }}
@@ -146,19 +119,24 @@ const Signin = () => {
             }}
           >
             <img src="/logo.png" />
-            <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
-              Sign in
+            <Typography component="h1" variant="h5" sx={{ mt: 3, mb: 1 }}>
+              Forgot Password
             </Typography>
-            <button
-              type="button"
-              onClick={handleGoogleSignIn}
-              className="login-with-google-btn"
-            >
-              Sign in with Google
-            </button>
             <Divider sx={{ mt: 2 }} style={{ width: '100%' }}>
-              Or
+              You will recieve an email with link
             </Divider>
+
+            <Box>
+              <Typography textAlign="left" sx={{ mt: 1, color: 'red' }}>
+                {error ? error.split('/')[1] : ''}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography textAlign="left" sx={{ mt: 1, color: '#03a518' }}>
+                {success ? success : ''}
+              </Typography>
+            </Box>
+
             <Box component="form" onSubmit={handleSubmit}>
               <TextField
                 margin="normal"
@@ -168,42 +146,21 @@ const Signin = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                sx={{ mt: 1 }}
                 autoFocus
               />
-              <TextField
-                margin="normal"
-                required
+
+              <Button
+                type="submit"
+                variant="contained"
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                sx={{ mt: 1 }}
-              />
-              <Typography textAlign="left" sx={{ m: 0, color: 'red' }}>
-                {error ? error.split('/')[1] : ''}
-              </Typography>
-              <Box textAlign="center">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  sx={{ mt: 2, mb: 2, backgroundColor: '#0000BC' }}
-                >
-                  Sign In
-                </Button>
-              </Box>
-              <Grid container sx={{ pt: 3 }} textAlign="left">
-                <Grid item xs={12} md={6}>
-                  <NextLink href="/forgotpassword" passHref>
-                    <Link variant="body2">Forgot password?</Link>
-                  </NextLink>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <NextLink href="/signup" passHref>
-                    <Link variant="body2">Don't have an account? Sign Up</Link>
+                sx={{ mt: 3, mb: 2, backgroundColor: '#0000BC' }}
+              >
+                Reset my password
+              </Button>
+              <Grid container justifyContent="flex-end" sx={{ pt: 3 }}>
+                <Grid item>
+                  <NextLink href="/signin" passHref>
+                    <Link variant="body2">Back to Sign In Page</Link>
                   </NextLink>
                 </Grid>
               </Grid>
@@ -215,4 +172,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Forgetpassword;

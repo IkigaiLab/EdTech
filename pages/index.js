@@ -1,27 +1,41 @@
-import { Button, Grid, Container, Typography } from '@mui/material';
+import {
+  Button,
+  Grid,
+  Paper,
+  Typography,
+  Box,
+  Card,
+  ListItem,
+  Container,
+  List,
+} from '@mui/material';
+
 import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter();
   return (
-    <div>
-      <Container
-        spacing={0}
-        direction="column"
-        style={{ minHeight: '100vh' }}
-        component="main"
-        sx={{
+    <>
+      <div
+        style={{
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           justifyContent: 'center',
-          textAlign: 'center',
+          alignItems: 'center',
         }}
       >
-        <Typography variant="h2">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </Typography>
-        <Grid sx={{ mt: 4 }}>
+        <Typography variant="h3">Welcome To Ikigai Edtech Platform</Typography>
+        <br />
+        <div
+          style={{
+            // minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Button
             variant="contained"
             size="large"
@@ -30,8 +44,9 @@ export default function Home() {
             }}
           >
             SignIn
-          </Button>{' '}
+          </Button>
           <Button
+            sx={{ ml: 3 }}
             variant="contained"
             color="secondary"
             size="large"
@@ -41,8 +56,9 @@ export default function Home() {
           >
             SignUp
           </Button>
-        </Grid>
-      </Container>
-    </div>
+        </div>
+      </div>
+    </>
+
   );
 }
