@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
   const [username, setusername] = useState('');
   const [loading, setloading] = useState(true);
 
-
   // const getData = async (userf) => {
   //   const docRef = doc(db, 'users', userf.uid);
   //   const querySnapshot = await getDoc(docRef);

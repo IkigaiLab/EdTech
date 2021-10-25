@@ -1,39 +1,37 @@
 import React, { useContext, useEffect } from 'react';
+import { signOut, getAuth } from 'firebase/auth';
 import { AuthContext } from '../firebase/auth';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import BookIcon from '@mui/icons-material/Book';
 import SourceIcon from '@mui/icons-material/Source';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Container, Grid } from '@mui/material';
+import { Avatar, Button, Card, Container, Grid } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
 export default function Layout(props) {
-  const { user, loading } = useContext(AuthContext);
+  const { user, setUser, loading } = useContext(AuthContext);
   const router = useRouter();
+  const auth = getAuth();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -47,15 +45,27 @@ export default function Layout(props) {
       if (user) {
       } else {
         console.log('user not signed in');
-        router.push('/');
+        router.push('/signin');
       }
     }
   }, [loading]);
 
+  const signout = () => {
+    signOut(auth)
+      .then(function () {
+        setUser(null);
+        router.push('/signin');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+      });
+  };
+
   const drawer = (
     <div>
-      {/* <Toolbar />
-      <Divider /> */}
       <Grid
         container
         sx={{ pl: 2, mt: 1 }}
@@ -69,7 +79,6 @@ export default function Layout(props) {
           <Typography sx={{ pl: 1 }}>The Ikigai Lab</Typography>
         </Grid>
       </Grid>
-      {/* <Divider /> */}
       <List>
         <ListItem button>
           <ListItemIcon>
@@ -116,17 +125,12 @@ export default function Layout(props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          backgroundColor: 'white',
+          backgroundColor: '#F5F6FA',
           color: 'black',
           boxShadow: 'none',
         }}
-        // position="absolute"
-        // sx={{
-        //   width: '100%',
-        //   zIndex: '99999',
-        // }}
       >
-        <Toolbar>
+        <Toolbar sx={{ mt: 2, mb: 2 }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -145,14 +149,13 @@ export default function Layout(props) {
             `}
           ></div>
           <Typography
-            variant="p"
             noWrap
             component="div"
             sx={{
               display: { xs: 'none', md: 'block', lg: 'block', xl: 'block' },
             }}
           >
-            Welcome {user?.displayName}
+            Welcome Back! {user?.displayName}
           </Typography>
           <Typography
             variant="p"
@@ -164,12 +167,73 @@ export default function Layout(props) {
           >
             {user?.displayName}
           </Typography>
-          <Typography variant="p" sx={{ ml: 1, mr: 1 }}>
+          <Typography
+            variant="p"
+            sx={{
+              ml: 1,
+              mr: 1,
+              display: { xs: 'block', md: 'none', lg: 'none', xl: 'none' },
+            }}
+          >
             |
           </Typography>
-          <Typography variant="p" noWrap component="div">
+          <Typography
+            variant="p"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: 'block', md: 'none', lg: 'none', xl: 'none' },
+            }}
+            onClick={signout}
+          >
             Log out
           </Typography>
+          <Grid
+            item
+            xs={4}
+            sm={4}
+            lg={3}
+            sx={{
+              ml: 2,
+              display: { xs: 'none', md: 'block', lg: 'block', xl: 'block' },
+            }}
+          >
+            <Card sx={{ height: '11vh' }}>
+              <Grid container sx={{ p: 2 }} alignItems="center">
+                <Grid item xs={6} lg={9} md={8}>
+                  <Grid container alignItems="center">
+                    <Grid item>
+                      <Avatar />
+                    </Grid>
+                    <Grid item>
+                      <Button variant="text" onClick={signout}>
+                        Logout
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  sx={{
+                    display: {
+                      xs: 'block',
+                      sm: 'block',
+                      md: 'block',
+                    },
+                  }}
+                  textAlign="right"
+                  xs={6}
+                  lg={3}
+                  md={4}
+                >
+                  <Button variant="text">
+                    <NotificationsIcon />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Box
@@ -216,12 +280,11 @@ export default function Layout(props) {
       </Box>
       <Box
         component="main"
-        sx={
-          {
-            // flexGrow: 1,
-            // width: { sm: `calc(100% - ${drawerWidth}px)` },
-          }
-        }
+        sx={{
+          // flexGrow: 1,
+          // width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundColor: '#F5F6FA',
+        }}
       >
         <Toolbar />
         {props.children}

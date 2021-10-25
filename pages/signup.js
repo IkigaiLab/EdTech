@@ -49,7 +49,7 @@ const Signup = () => {
         console.log('user signed in');
         console.log(uid);
         console.log(uemail);
-        router.push('/welcome');
+        router.push('/dashboard');
       } else {
         console.log('user not signed in');
       }
@@ -82,7 +82,7 @@ const Signup = () => {
       .then(() => {
         console.log('signin successful');
 
-        router.push('/welcome');
+        router.push('/dashboard');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -102,7 +102,7 @@ const Signup = () => {
         // The signed-in user info.
         const user = result.user;
         console.log(user);
-        router.push('/welcome');
+        router.push('/dashboard');
         // ...
       })
       .catch((error) => {
