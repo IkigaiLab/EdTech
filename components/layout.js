@@ -28,11 +28,11 @@ import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
-export default function Layout(props) {
+export default function Layout({ children }) {
   const { user, setUser, loading } = useContext(AuthContext);
   const router = useRouter();
   const auth = getAuth();
-  const { window } = props;
+  // const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -114,8 +114,8 @@ export default function Layout(props) {
     </div>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // const container =
+  //   window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -243,7 +243,7 @@ export default function Layout(props) {
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
+          // container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -281,14 +281,16 @@ export default function Layout(props) {
       <Box
         component="main"
         sx={{
-          // flexGrow: 1,
+          flexGrow: 1,
+          overflow: 'hidden',
+          // boxSizing: 'content-box',
           // width: { sm: `calc(100% - ${drawerWidth}px)` },
           backgroundColor: '#F5F6FA',
         }}
       >
         <Toolbar />
-        {props.children}
-        {/* <Container style={{ minHeight: '80vh' }}>{props.children}</Container> */}
+        {children}
+        {/* <Container style={{ minHeight: '80vh' }}>{children}</Container> */}
       </Box>
     </Box>
   );

@@ -1,17 +1,13 @@
-function createCourse(data) {
-  // Adding data in firebase
-}
+import { getFirestore, getDocs, collection } from 'firebase/firestore';
 
-function deleteCourse(data) {
-  // Delete course from database
-}
+const db = getFirestore();
 
-function getAllCourse(data) {
-  // Return all the courses stored in database to the user
-}
-
-module.exports = {
-  createCourse,
-  deleteCourse,
-  getAllCourse,
+export const getAllCourse = async () => {
+  const allcourses = [];
+  const querySnapshot = await getDocs(collection(db, 'Course'));
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+    allcourses.push(doc.data());
+  });
+  return allcourses;
 };
