@@ -16,12 +16,14 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
+import { getFirestore, collection, setDoc, doc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../firebase/auth';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 
+const db = getFirestore();
 const theme = createTheme({
   palette: {
     background: {
@@ -81,16 +83,26 @@ const Signin = () => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
-        console.log(user);
-        router.push('/dashboard');
+        // const user = collection(db, 'users');
+        // return setDoc(doc(user, result.user.uid), {
+        //   name: result.user.displayName,
+        //   email: result.user.email,
+        //   courses: [],
+        // });
         // ...
+        console.log('signin successful');
+
+        router.push('/dashboard');
       })
+      // .then(() => {
+      //   console.log('signin successful');
+
+      //   router.push('/dashboard');
+      // })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        seterror(error.code);
         // The email of the user's account used.
         const email = error.email;
         // The AuthCredential type that was used.
@@ -125,7 +137,7 @@ const Signin = () => {
         >
           <Box
             sx={{
-              backgroundColor: '#0000FF',
+              backgroundColor: '#0E3B7D',
               borderRadius: '20px 0 0 20px',
               display: { xs: 'none', sm: 'none', md: 'block' },
             }}
@@ -190,7 +202,7 @@ const Signin = () => {
                   type="submit"
                   variant="contained"
                   fullWidth
-                  sx={{ mt: 2, mb: 2, backgroundColor: '#0000BC' }}
+                  sx={{ mt: 2, mb: 2, backgroundColor: '#0E3B7D' }}
                 >
                   Sign In
                 </Button>

@@ -71,10 +71,12 @@ const Signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        // const user = collection(db, 'users');
-        // return setDoc(doc(user, userCredential.user.uid), {
-        //   name: name,
-        // });
+        const user = collection(db, 'users');
+        setDoc(doc(user, userCredential.user.uid), {
+          name: name,
+          email: email,
+          courses: [],
+        });
         return updateProfile(auth.currentUser, {
           displayName: name,
         });
@@ -100,10 +102,18 @@ const Signup = () => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
-        console.log(user);
-        router.push('/dashboard');
+        const user = collection(db, 'users');
+        return setDoc(doc(user, result.user.uid), {
+          name: result.user.displayName,
+          email: result.user.email,
+          courses: [],
+        });
         // ...
+      })
+      .then(() => {
+        console.log('signin successful');
+
+        router.push('/dashboard');
       })
       .catch((error) => {
         // Handle Errors here.
@@ -143,7 +153,7 @@ const Signup = () => {
         >
           <Box
             sx={{
-              backgroundColor: '#0000FF',
+              backgroundColor: '#0E3B7D',
               borderRadius: '20px 0 0 20px',
               display: { xs: 'none', sm: 'none', md: 'block' },
             }}
@@ -151,7 +161,7 @@ const Signup = () => {
             <img
               src="/loginanimate.svg"
               height="550px"
-              width="500px"
+              width="480px"
               style={{ maxWidth: 'calc(100% - 20px)' }}
             />
           </Box>
@@ -219,7 +229,7 @@ const Signup = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 2, mb: 1, backgroundColor: '#0000BC' }}
+                  sx={{ mt: 2, mb: 1, backgroundColor: '#0E3B7D' }}
                 >
                   Sign Up
                 </Button>

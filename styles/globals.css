@@ -2,6 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  background-color: #f5f6fa;
 }
 .loader {
   position: fixed;
@@ -16,6 +17,7 @@ body {
   transition: background-color 0.3s, box-shadow 0.3s;
   padding: 12px 16px 12px 42px;
   border: none;
+  cursor: pointer;
   border-radius: 3px;
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
   color: #757575;
@@ -45,9 +47,15 @@ body {
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
   cursor: not-allowed;
 }
-.react-multiple-carousel__arrow--left {
+/* .react-multiple-carousel__arrow--left {
   left: 0 !important;
 }
 .react-multiple-carousel__arrow--right {
   right: 0 !important;
+} */
+
+.active {
+  /* color: red; */
+  color: white;
+  /* font-weight: 400; */
 }

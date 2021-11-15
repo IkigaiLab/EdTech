@@ -98,7 +98,7 @@ const Forgetpassword = () => {
         >
           <Box
             sx={{
-              backgroundColor: '#0000FF',
+              backgroundColor: '#0E3B7D',
               borderRadius: '20px 0 0 20px',
               display: { xs: 'none', sm: 'none', md: 'block' },
             }}
@@ -106,7 +106,7 @@ const Forgetpassword = () => {
             <img
               src="/forgotpassword.svg"
               height="550px"
-              width="500px"
+              width="490px"
               style={{ maxWidth: 'calc(100% - 20px)' }}
             />
           </Box>
@@ -153,7 +153,7 @@ const Forgetpassword = () => {
                 type="submit"
                 variant="contained"
                 fullWidth
-                sx={{ mt: 3, mb: 2, backgroundColor: '#0000BC' }}
+                sx={{ mt: 3, mb: 2, backgroundColor: '#0E3B7D' }}
               >
                 Reset my password
               </Button>

@@ -13,6 +13,7 @@ import Layout from '../components/layout';
 import Carousel from 'react-multi-carousel';
 import MobileDetect from 'mobile-detect';
 import { getAllCourse } from '../Utils/database/course';
+import { useRouter } from 'next/router';
 
 const responsive = {
   superLargeDesktop: {
@@ -36,6 +37,7 @@ const responsive = {
 
 const Courses = ({ deviceType }) => {
   const [allcourse, setallcourse] = useState([]);
+  const router = useRouter();
   const coursesall = async () => {
     const courseall = await getAllCourse();
     setallcourse(courseall);
@@ -44,19 +46,22 @@ const Courses = ({ deviceType }) => {
   useEffect(() => {
     coursesall();
   }, []);
+
+  const enrolPage = (id) => {
+    router.push(`/courseenrollment/${id}`);
+  };
+
   return (
     <Layout>
       <Grid
         container
         component="main"
         sx={{
-          // minHeight: '100vh',
-          // minWidth: '100%',
           mt: 5,
         }}
       >
-        <Container maxWidth="lg">
-          <Typography variant="h5" component="h2">
+        <Container maxWidth="lg" sx={{ mb: 3 }}>
+          <Typography variant="h5" component="h2" sx={{ mb: 3 }}>
             Recommended For You
           </Typography>
           <Carousel
@@ -67,7 +72,18 @@ const Courses = ({ deviceType }) => {
             responsive={responsive}
           >
             {allcourse.map((item, index) => (
-              <Card sx={{ m: 2 }} key={index}>
+              <Card
+                sx={{
+                  ml: 2,
+                  mr: 2,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  // justifyContent: 'space-between',
+                }}
+                elevation={3}
+                key={index}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -88,20 +104,23 @@ const Courses = ({ deviceType }) => {
                     </Grid>
                   </Grid>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {item.Description}
                   </Typography>
                 </CardContent>
-                <CardActions>
-                  <Button size="small" fullWidth variant="outlined">
+                <CardActions sx={{ marginTop: 'auto' }}>
+                  <Button
+                    size="small"
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => enrolPage(item.id)}
+                  >
                     Buy Now
                   </Button>
                 </CardActions>
               </Card>
             ))}
           </Carousel>
-          <Typography variant="h5" component="h2" sx={{ mt: 4 }}>
+          <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 3 }}>
             Trending Courses
           </Typography>
           <Carousel
@@ -112,7 +131,17 @@ const Courses = ({ deviceType }) => {
             responsive={responsive}
           >
             {allcourse.map((item, index) => (
-              <Card sx={{ m: 2 }} key={index}>
+              <Card
+                sx={{
+                  ml: 2,
+                  mr: 2,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  // justifyContent: 'space-between',
+                }}
+                key={index}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -133,12 +162,10 @@ const Courses = ({ deviceType }) => {
                     </Grid>
                   </Grid>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {item.Description}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ marginTop: 'auto' }}>
                   <Button size="small" fullWidth variant="outlined">
                     Buy Now
                   </Button>
