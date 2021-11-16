@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './firebaseconfig';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, getDocs, collection } from 'firebase/firestore';
 
 const db = getFirestore();
 const auth = getAuth();
@@ -20,11 +20,20 @@ export const AuthProvider = ({ children }) => {
   //   setusername(querySnapshot.data().name);
   // };
 
+  // const getAllCourse = async () => {
+  //   const querySnapshot = await getDocs(collection(db, 'Course'));
+  //   querySnapshot.forEach((doc) => {
+  //     // doc.data() is never undefined for query doc snapshots
+  //     console.log(doc.id, ' => ', doc.data());
+  //   });
+  // };
+
   useEffect(() => {
     onAuthStateChanged(auth, (userfetch) => {
       if (userfetch) {
         setUser(userfetch);
         // getData(userfetch);
+        // getAllCourse();
         setloading(false);
       } else {
         setloading(false);

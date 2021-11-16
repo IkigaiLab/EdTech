@@ -15,24 +15,31 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ExploreIcon from '@mui/icons-material/Explore';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import SourceIcon from '@mui/icons-material/Source';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
+import EventIcon from '@mui/icons-material/Event';
+import ForumIcon from '@mui/icons-material/Forum';
 
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Avatar, Button, Card, Container, Grid } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
-export default function Layout(props) {
+export default function Layout({ children }) {
   const { user, setUser, loading } = useContext(AuthContext);
   const router = useRouter();
+  const currentRoute = router.pathname;
   const auth = getAuth();
-  const { window } = props;
+  // const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -80,42 +87,155 @@ export default function Layout(props) {
         </Grid>
       </Grid>
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <HomeIcon sx={{ color: 'white' }} />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <SourceIcon sx={{ color: 'white' }} />
-          </ListItemIcon>
-          <ListItemText primary="Your Courses" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <AnalyticsIcon sx={{ color: 'white' }} />
-          </ListItemIcon>
-          <ListItemText primary="Challenges" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <Inventory2Icon sx={{ color: 'white' }} />
-          </ListItemIcon>
-          <ListItemText primary="Pratice Problems" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <AnnouncementIcon sx={{ color: 'white' }} />
-          </ListItemIcon>
-          <ListItemText primary="MasterClass" />
-        </ListItem>
+        <Link href="/dashboard">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <HomeIcon
+                className={currentRoute === '/dashboard' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/dashboard' ? 'active' : ''}
+              primary="Dashboard"
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/tracks/mytrack">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <AlignHorizontalLeftIcon
+                className={currentRoute === '/learningtracks' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/learningtracks' ? 'active' : ''}
+              primary="My Tracks"
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/mymentor">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <SupervisorAccountIcon
+                className={currentRoute === '/mentor' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/mentor' ? 'active' : ''}
+              primary="My Mentor"
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/events/upcoming">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <EventIcon
+                className={currentRoute === '/events' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/events' ? 'active' : ''}
+              primary="Events"
+            />
+          </ListItem>
+        </Link>
+
+        {/* <Link href="/courses">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <ExploreIcon
+                className={currentRoute === '/courses' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/courses' ? 'active' : ''}
+              primary="Explore Courses"
+            />
+          </ListItem>
+        </Link> */}
+
+        {/* <Link href="/yourcourses">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <SourceIcon
+                className={currentRoute === '/yourcourses' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/yourcourses' ? 'active' : ''}
+              primary="Your Courses"
+            />
+          </ListItem>
+        </Link> */}
+
+        <Link href="/challenges/upcoming">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <AnalyticsIcon
+                className={
+                  currentRoute === '/challenges/upcoming' ? 'active' : ''
+                }
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary="Challenges"
+              className={
+                currentRoute === '/challenges/upcoming' ? 'active' : ''
+              }
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/practiceproblems/latest">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <Inventory2Icon
+                className={currentRoute === '/practiceproblems' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary="Pratice Problems"
+              className={currentRoute === '/practiceproblems' ? 'active' : ''}
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/masterclass">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <AnnouncementIcon
+                className={currentRoute === '/masterclass' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/masterclass' ? 'active' : ''}
+              primary="MasterClass"
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/discussion">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <ForumIcon
+                className={currentRoute === '/discussion' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/discussion' ? 'active' : ''}
+              primary="Discussion"
+            />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // const container =
+  //   window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -243,7 +363,7 @@ export default function Layout(props) {
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
+          // container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -281,14 +401,16 @@ export default function Layout(props) {
       <Box
         component="main"
         sx={{
-          // flexGrow: 1,
+          flexGrow: 1,
+          overflow: 'hidden',
+          // boxSizing: 'content-box',
           // width: { sm: `calc(100% - ${drawerWidth}px)` },
           backgroundColor: '#F5F6FA',
         }}
       >
         <Toolbar />
-        {props.children}
-        {/* <Container style={{ minHeight: '80vh' }}>{props.children}</Container> */}
+        {children}
+        {/* <Container style={{ minHeight: '80vh' }}>{children}</Container> */}
       </Box>
     </Box>
   );

@@ -8,6 +8,19 @@ module.exports = {
         destination: '/signin',
         permanent: true,
       },
+      {
+        source: '/challenges',
+        destination: '/challenges/upcoming',
+        permanent: true,
+      },
+      {
+        source: '/events',
+        destination: '/events/upcoming',
+        permanent: true,
+      },
     ];
+  },
+  images: {
+    domains: ['images.unsplash.com'],
   },
 };

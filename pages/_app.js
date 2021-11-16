@@ -1,5 +1,6 @@
 import { AuthProvider } from '.././firebase/auth';
 import '../styles/globals.css';
+import 'react-multi-carousel/lib/styles.css';
 import { Router } from 'next/router';
 import { useState } from 'react';
 const Loader = () => <div className="loader"></div>;
