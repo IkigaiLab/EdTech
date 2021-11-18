@@ -105,11 +105,13 @@ export default function Layout({ children }) {
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <AlignHorizontalLeftIcon
-                className={currentRoute === '/learningtracks' ? 'active' : ''}
+                className={
+                  router.pathname.startsWith('/tracks/') ? 'active' : ''
+                }
               />
             </ListItemIcon>
             <ListItemText
-              className={currentRoute === '/learningtracks' ? 'active' : ''}
+              className={router.pathname.startsWith('/tracks/') ? 'active' : ''}
               primary="My Tracks"
             />
           </ListItem>
@@ -119,11 +121,11 @@ export default function Layout({ children }) {
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <SupervisorAccountIcon
-                className={currentRoute === '/mentor' ? 'active' : ''}
+                className={currentRoute === '/mymentor' ? 'active' : ''}
               />
             </ListItemIcon>
             <ListItemText
-              className={currentRoute === '/mentor' ? 'active' : ''}
+              className={currentRoute === '/mymentor' ? 'active' : ''}
               primary="My Mentor"
             />
           </ListItem>
@@ -133,11 +135,13 @@ export default function Layout({ children }) {
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <EventIcon
-                className={currentRoute === '/events' ? 'active' : ''}
+                className={
+                  router.pathname.startsWith('/events/') ? 'active' : ''
+                }
               />
             </ListItemIcon>
             <ListItemText
-              className={currentRoute === '/events' ? 'active' : ''}
+              className={router.pathname.startsWith('/events/') ? 'active' : ''}
               primary="Events"
             />
           </ListItem>
@@ -176,14 +180,14 @@ export default function Layout({ children }) {
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <AnalyticsIcon
                 className={
-                  currentRoute === '/challenges/upcoming' ? 'active' : ''
+                  router.pathname.startsWith('/challenges/') ? 'active' : ''
                 }
               />
             </ListItemIcon>
             <ListItemText
               primary="Challenges"
               className={
-                currentRoute === '/challenges/upcoming' ? 'active' : ''
+                router.pathname.startsWith('/challenges/') ? 'active' : ''
               }
             />
           </ListItem>
@@ -193,12 +197,18 @@ export default function Layout({ children }) {
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <Inventory2Icon
-                className={currentRoute === '/practiceproblems' ? 'active' : ''}
+                className={
+                  router.pathname.startsWith('/practiceproblems/')
+                    ? 'active'
+                    : ''
+                }
               />
             </ListItemIcon>
             <ListItemText
               primary="Pratice Problems"
-              className={currentRoute === '/practiceproblems' ? 'active' : ''}
+              className={
+                router.pathname.startsWith('/practiceproblems/') ? 'active' : ''
+              }
             />
           </ListItem>
         </Link>

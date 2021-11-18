@@ -13,9 +13,12 @@ import {
   Link as MuiLink,
 } from '@mui/material';
 import Layout from '../../components/layout';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const PracticeProblems = ({ children }) => {
+  const router = useRouter();
+
   return (
     <Layout>
       <Grid
@@ -33,8 +36,13 @@ const PracticeProblems = ({ children }) => {
                 <MuiLink
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/practiceproblems/latest')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   Latest
                 </MuiLink>
@@ -45,8 +53,13 @@ const PracticeProblems = ({ children }) => {
                 <MuiLink
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/practiceproblems/all')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   All
                 </MuiLink>

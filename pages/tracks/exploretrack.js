@@ -12,6 +12,7 @@ import {
   Box,
 } from '@mui/material';
 import Tracks from '../tracks/index';
+import Avatar from '@mui/material/Avatar';
 
 const data = [
   {
@@ -19,12 +20,14 @@ const data = [
     trackDescription:
       'Become a Machine Learning Engineer, learn machine learning by building cool projects',
     courses: 'Mentor Based Learning',
+    image: '/machinelearning.jpg',
   },
   {
     trackName: 'Data Scientist',
     trackDescription:
       ' Become a Data scientists, learn machine learning, deep learning ,natural language processing.',
     courses: 'Mentor Based Learning',
+    image: '/datascience.jpg',
   },
 ];
 
@@ -82,9 +85,22 @@ const Exploretrack = () => {
                 <Typography gutterBottom variant="h5" component="div">
                   {item.trackName}
                 </Typography>
-                <Typography gutterBottom>{item.courses} Course</Typography>
+                <Typography gutterBottom>{item.courses}</Typography>
               </CardContent>
               <CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '-60px',
+                    marginRight: '15px',
+                  }}
+                >
+                  <Avatar
+                    src={item.image}
+                    sx={{ width: 70, height: 70, boxShadow: 3 }}
+                  />
+                </Box>
                 <Typography variant="body2" color="text.secondary">
                   {item.trackDescription}
                 </Typography>
@@ -109,30 +125,9 @@ const Exploretrack = () => {
       </Typography>
       <Box sx={{ mt: 2, mb: 2 }}>
         {learningTrackBenefits.map((item, index) => (
-          // <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
-          //   <CardActionArea>
-          //     <Card
-          //       sx={{
-          //         height: '100%',
-          //         display: 'flex',
-          //         flexDirection: 'column',
-          //         textAlign: 'center',
-          //       }}
-          //       elevation={5}
-          //     >
-          //       <CardContent>
-          <Typography
-            variant="h6"
-            // sx={{ p: 4 }}
-            component="div"
-            key={index}
-          >
+          <Typography variant="h6" component="div" key={index}>
             <li>{item.benefit}</li>
           </Typography>
-          //       </CardContent>
-          //     </Card>
-          //   </CardActionArea>
-          // </Grid>
         ))}
       </Box>
     </Tracks>

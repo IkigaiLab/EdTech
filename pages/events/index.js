@@ -14,8 +14,11 @@ import {
 } from '@mui/material';
 import Layout from '../../components/layout';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Events = ({ children }) => {
+  const router = useRouter();
+
   return (
     <Layout>
       <Grid
@@ -33,8 +36,13 @@ const Events = ({ children }) => {
                 <MuiLink
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/events/upcoming')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   Upcoming
                 </MuiLink>
@@ -45,8 +53,13 @@ const Events = ({ children }) => {
                 <MuiLink
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/events/ongoing')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   Ongoing
                 </MuiLink>
@@ -57,8 +70,13 @@ const Events = ({ children }) => {
                 <MuiLink
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/events/completed')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   Completed
                 </MuiLink>

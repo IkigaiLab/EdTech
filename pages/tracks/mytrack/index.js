@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Tracks from '../index';
 import { useRouter } from 'next/router';
+import Avatar from '@mui/material/Avatar';
 
 const data = [
   {
@@ -48,9 +49,22 @@ const Mytrack = () => {
                 <Typography gutterBottom variant="h5" component="div">
                   {item.trackName}
                 </Typography>
-                <Typography gutterBottom>{item.courses} Course</Typography>
+                <Typography gutterBottom>{item.courses}</Typography>
               </CardContent>
               <CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '-60px',
+                    marginRight: '15px',
+                  }}
+                >
+                  <Avatar
+                    src="/datascience.jpg"
+                    sx={{ width: 70, height: 70, boxShadow: 3 }}
+                  />
+                </Box>
                 <Typography variant="body2" color="text.secondary">
                   {item.trackDescription}
                 </Typography>

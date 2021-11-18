@@ -14,8 +14,10 @@ import {
 } from '@mui/material';
 import NextLink from 'next/link';
 import Layout from '../../components/layout';
+import { useRouter } from 'next/router';
 
 const Tracks = ({ children }) => {
+  const router = useRouter();
   return (
     <Layout>
       <Grid
@@ -32,8 +34,13 @@ const Tracks = ({ children }) => {
                 <Link
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/tracks/mytrack')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   My Track
                 </Link>
@@ -44,8 +51,13 @@ const Tracks = ({ children }) => {
                 <Link
                   sx={{
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'gray',
                   }}
+                  className={
+                    router.pathname.startsWith('/tracks/exploretrack')
+                      ? 'subactive'
+                      : ''
+                  }
                 >
                   Explore Track
                 </Link>

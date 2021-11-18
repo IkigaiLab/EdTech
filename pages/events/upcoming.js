@@ -45,7 +45,7 @@ const Upcoming = () => {
             >
               <Typography>15 Nov, 6:00pm</Typography>
               <Button size="small" variant="contained">
-                Add To Calender
+                Register
               </Button>
             </CardActions>
           </Card>

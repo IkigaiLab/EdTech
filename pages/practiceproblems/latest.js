@@ -13,7 +13,7 @@ import PracticeProblems from '.';
 const data = [
   {
     problem: 'Predict Future Sales',
-    text: 'Challenging time-series dataset consisting of daily sales data, kindly provided by one of the largest Russian software firms ',
+    text: 'Challenging time-series dataset consisting of daily sales data, kindly provided by... ',
   },
   {
     problem: 'Titanic - Machine Learning from Disaster',
@@ -51,12 +51,14 @@ const latest = () => {
                     p: 1,
                   }}
                 >
-                  <Typography variant="h6" fontWeight="800">
+                  <Typography fontSize="17px" fontWeight="600">
                     {item.problem}
                   </Typography>
                   <Typography>{item.text}</Typography>
-                  <Box>
-                    <Button>view more</Button>
+                  <Box sx={{ mt: 1 }}>
+                    <Button variant="outlined" size="small">
+                      view more
+                    </Button>
                   </Box>
                 </Grid>
                 <Grid item lg={4} md={4} xs={12}>
