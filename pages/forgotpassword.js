@@ -19,7 +19,7 @@ const auth = getAuth();
 const theme = createTheme({
   palette: {
     background: {
-      default: '#0000bc',
+      default: '#f5f6fa',
     },
   },
 });
