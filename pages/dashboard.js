@@ -15,7 +15,7 @@ import Layout from '../components/layout';
 import DashboardBoxes from '../components/Dashboard/dashboardBoxes';
 import ContinueLearning from '../components/Dashboard/continueLearning';
 import UpcomingEvents from '../components/Dashboard/UpcomingEvents';
-import UpcomingChallenges from '../components/Dashboard/upcomingChallenges';
+import UpcomingChallenges from '../components/Dashboard/UpcomingChallenges';
 import Sidebar from '../components/Dashboard/Sidebar';
 
 const Dashboard = () => {
