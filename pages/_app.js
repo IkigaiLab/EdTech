@@ -3,6 +3,8 @@ import '../styles/globals.css';
 import 'react-multi-carousel/lib/styles.css';
 import { Router } from 'next/router';
 import { useState } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '../Utils/app/store';
 const Loader = () => <div className="loader"></div>;
 
 function MyApp({ Component, pageProps }) {
@@ -20,7 +22,9 @@ function MyApp({ Component, pageProps }) {
     <>
       {loading && <Loader />}
       <AuthProvider>
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
       </AuthProvider>
     </>
   );
