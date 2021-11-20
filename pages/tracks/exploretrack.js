@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Tracks from '../tracks/index';
 import Avatar from '@mui/material/Avatar';
+import { useRouter } from 'next/router';
 
 const data = [
   {
@@ -21,6 +22,7 @@ const data = [
       'Become a Machine Learning Engineer, learn machine learning by building cool projects',
     courses: 'Mentor Based Learning',
     image: '/machinelearning.jpg',
+    path: '/tracks/ml-engineer',
   },
   {
     trackName: 'Data Scientist',
@@ -28,6 +30,7 @@ const data = [
       ' Become a Data scientists, learn machine learning, deep learning ,natural language processing.',
     courses: 'Mentor Based Learning',
     image: '/datascience.jpg',
+    path: '/tracks/data-science',
   },
 ];
 
@@ -50,6 +53,8 @@ const learningTrackBenefits = [
 ];
 
 const Exploretrack = () => {
+  const router = useRouter();
+
   return (
     <Tracks>
       <Typography sx={{ fontSize: 20, mt: 4 }}>Introducing</Typography>
@@ -112,8 +117,12 @@ const Exploretrack = () => {
                   justifyContent: 'end',
                 }}
               >
-                <Button size="small" color="primary">
-                  Begin
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={() => router.push(item.path)}
+                >
+                  Start
                 </Button>
               </CardActions>
             </Card>

@@ -9,8 +9,10 @@ import {
   Button,
   CardMedia,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 
-const continueLearning = () => {
+const ContinueLearning = () => {
+  const router = useRouter();
   return (
     <Card sx={{ p: 4 }}>
       <Grid
@@ -28,7 +30,12 @@ const continueLearning = () => {
         </Grid>
         <Grid item lg={6} md={6} xs={12}>
           <Box>
-            <Button variant="contained">Continue</Button>
+            <Button
+              variant="contained"
+              onClick={() => router.push('/tracks/mytrack/datascience')}
+            >
+              Continue
+            </Button>
           </Box>
         </Grid>
       </Grid>
@@ -36,4 +43,4 @@ const continueLearning = () => {
   );
 };
 
-export default continueLearning;
+export default ContinueLearning;

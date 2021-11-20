@@ -9,6 +9,7 @@ import {
   Box,
 } from '@mui/material';
 import PracticeProblems from '.';
+import { useRouter } from 'next/router';
 
 const data = [
   {
@@ -30,11 +31,13 @@ const data = [
 ];
 
 const All = () => {
+  const router = useRouter();
+
   return (
     <PracticeProblems>
       <Grid container spacing={3} sx={{ mb: 4 }}>
         {data.map((item, index) => (
-          <Grid item xs={12} md={12} lg={6} key={index}>
+          <Grid item xs={12} md={6} lg={6} key={index}>
             <Card
               sx={{
                 height: '100%',
@@ -48,7 +51,7 @@ const All = () => {
                 <Grid
                   item
                   lg={8}
-                  md={8}
+                  md={12}
                   xs={12}
                   sx={{
                     display: 'flex',
@@ -56,7 +59,7 @@ const All = () => {
                     // alignItems: 'center',
                     // textAlign: 'center',
                     justifyContent: 'center',
-                    p: 1,
+                    p: 2,
                   }}
                 >
                   <Typography fontSize="17px" fontWeight="600">
@@ -64,16 +67,33 @@ const All = () => {
                   </Typography>
                   <Typography>{item.text}</Typography>
                   <Box sx={{ mt: 1 }}>
-                    <Button variant="outlined" size="small">
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => router.push('/practiceproblems/pps')}
+                    >
                       view more
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item lg={4} md={4} xs={12}>
+                <Grid
+                  item
+                  lg={4}
+                  md={12}
+                  xs={12}
+                  sx={{
+                    display: {
+                      xs: 'none',
+                      sm: 'none',
+                      md: 'none',
+                      lg: 'block',
+                    },
+                  }}
+                >
                   <CardMedia
                     component="img"
                     alt="green iguana"
-                    height="100%"
+                    sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
                     image="https://images.unsplash.com/photo-1499673610122-01c7122c5dcb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=727&q=80"
                   />
                 </Grid>

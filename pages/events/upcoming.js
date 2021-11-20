@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -7,14 +7,49 @@ import {
   Grid,
   Typography,
   Box,
+  Dialog,
   CardContent,
   CardActions,
 } from '@mui/material';
 import Events from '../events/index';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Upcoming = () => {
+  const [showDialog, setShowDialog] = useState(false);
+  const openDialog = () => setShowDialog(true);
+  const closeDialog = () => setShowDialog(false);
+
+  const Registeration = () => {
+    openDialog();
+  };
   return (
     <Events>
+      <Dialog
+        open={showDialog}
+        // onClose={closeDialog}
+        maxWidth="sm"
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick') {
+            closeDialog();
+          }
+        }}
+      >
+        <Box p={4} textAlign="center">
+          <CheckCircleIcon sx={{ height: 80, width: 80, color: 'green' }} />
+          <Typography variant="h5" sx={{ mt: 1 }}>
+            Successfully Registered for Event
+          </Typography>
+          <Typography sx={{ mt: 1 }}>Check your email for details</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => closeDialog()}
+            sx={{ mt: 3 }}
+          >
+            OK
+          </Button>
+        </Box>
+      </Dialog>
       {[1, 2, 3, 4].map((item, index) => (
         <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
           <Card
@@ -44,7 +79,7 @@ const Upcoming = () => {
               sx={{ m: 1, display: 'flex', justifyContent: 'space-between' }}
             >
               <Typography>15 Nov, 6:00pm</Typography>
-              <Button size="small" variant="contained">
+              <Button size="small" variant="contained" onClick={Registeration}>
                 Register
               </Button>
             </CardActions>

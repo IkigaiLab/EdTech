@@ -9,6 +9,7 @@ import {
   Box,
 } from '@mui/material';
 import Challenges from '../challenges/index';
+import { useRouter } from 'next/router';
 
 const data = [
   {
@@ -22,6 +23,8 @@ const data = [
 ];
 
 const Upcoming = () => {
+  const router = useRouter();
+
   return (
     <Challenges>
       {data.map((item, index) => (
@@ -38,7 +41,7 @@ const Upcoming = () => {
                 // alignItems: 'center',
                 // textAlign: 'center',
                 justifyContent: 'center',
-                p: 1,
+                p: 2,
               }}
             >
               <Typography fontSize="17px" fontWeight="600">
@@ -46,12 +49,29 @@ const Upcoming = () => {
               </Typography>
               <Typography>{item.text}</Typography>
               <Box sx={{ mt: 1 }}>
-                <Button variant="outlined" size="small">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => router.push('/challenges/challe1')}
+                >
                   view more
                 </Button>
               </Box>
             </Grid>
-            <Grid item lg={4} md={4} xs={12}>
+            <Grid
+              item
+              lg={4}
+              md={4}
+              xs={12}
+              sx={{
+                display: {
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'block',
+                  lg: 'block',
+                },
+              }}
+            >
               <CardMedia
                 component="img"
                 alt="green iguana"

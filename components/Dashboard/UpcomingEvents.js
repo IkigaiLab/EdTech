@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Button,
+  Card,
+  CardMedia,
+  Container,
   Grid,
   Typography,
-  Container,
-  Card,
-  CardContent,
   Box,
-  Button,
-  CardMedia,
+  Dialog,
+  CardContent,
   CardActions,
 } from '@mui/material';
 import Carousel from 'react-multi-carousel';
 import MobileDetect from 'mobile-detect';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const responsive = {
   superLargeDesktop: {
@@ -34,8 +36,41 @@ const responsive = {
 };
 
 const UpcomingEvents = ({ deviceType }) => {
+  const [showDialog, setShowDialog] = useState(false);
+  const openDialog = () => setShowDialog(true);
+  const closeDialog = () => setShowDialog(false);
+  const Registeration = () => {
+    openDialog();
+  };
   return (
     <Grid item lg={12} md={12} xs={12}>
+      <Dialog
+        open={showDialog}
+        // onClose={closeDialog}
+        maxWidth="sm"
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick') {
+            closeDialog();
+          }
+        }}
+      >
+        <Box p={4} textAlign="center">
+          <CheckCircleIcon sx={{ height: 80, width: 80, color: 'green' }} />
+          <Typography variant="h5" sx={{ mt: 1 }}>
+            Successfully Registered for Event
+          </Typography>
+          <Typography sx={{ mt: 1 }}>Check your email for details</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => closeDialog()}
+            sx={{ mt: 3 }}
+          >
+            OK
+          </Button>
+        </Box>
+      </Dialog>
+
       <Typography variant="h6" sx={{ mb: 3 }}>
         Upcoming Events
       </Typography>
@@ -81,7 +116,7 @@ const UpcomingEvents = ({ deviceType }) => {
               sx={{ m: 1, display: 'flex', justifyContent: 'space-between' }}
             >
               <Typography>15 Nov, 6:00pm</Typography>
-              <Button size="small" variant="contained">
+              <Button size="small" variant="contained" onClick={Registeration}>
                 Register
               </Button>
             </CardActions>
