@@ -18,6 +18,7 @@ import {
   updateProfile,
   signInWithPopup,
   GoogleAuthProvider,
+  getAdditionalUserInfo,
 } from 'firebase/auth';
 import { getFirestore, collection, setDoc, doc } from 'firebase/firestore';
 
@@ -76,6 +77,8 @@ const Signup = () => {
           name: name,
           email: email,
           courses: [],
+          tracks: [],
+          practiceproblems: [],
         });
         return updateProfile(auth.currentUser, {
           displayName: name,
@@ -102,13 +105,20 @@ const Signup = () => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
-        const user = collection(db, 'users');
-        return setDoc(doc(user, result.user.uid), {
-          name: result.user.displayName,
-          email: result.user.email,
-          courses: [],
-        });
-        // ...
+        const details = getAdditionalUserInfo(result);
+        console.log(details);
+        console.log(details.isNewUser);
+        if (details.isNewUser != false) {
+          const user = collection(db, 'users');
+          return setDoc(doc(user, result.user.uid), {
+            name: result.user.displayName,
+            email: result.user.email,
+            courses: [],
+            tracks: [],
+          });
+        }
+        // console.log('signin successful');
+        // router.push('/dashboard');
       })
       .then(() => {
         console.log('signin successful');

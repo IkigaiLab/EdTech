@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
-  webpack5: false,
+  // webpack5: false,
   async redirects() {
     return [
       {
@@ -17,6 +17,14 @@ module.exports = {
         source: '/events',
         destination: '/events/upcoming',
         permanent: true,
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/execute',
+        destination: 'https://api.jdoodle.com/execute',
       },
     ];
   },

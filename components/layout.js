@@ -18,6 +18,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import ExploreIcon from '@mui/icons-material/Explore';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import SourceIcon from '@mui/icons-material/Source';
+import CodeIcon from '@mui/icons-material/Code';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
@@ -42,6 +43,12 @@ export default function Layout({ children }) {
       secondary: {
         main: '#EB0014',
       },
+      redish: {
+        main: '#c41d1d',
+      },
+      greenish:{
+        main: "#10ed2a"
+      }
     },
   });
 
@@ -203,12 +210,12 @@ export default function Layout({ children }) {
           </ListItem>
         </Link>
 
-        <Link href="/practiceproblems/latest">
+        <Link href="/practiceproblems">
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <Inventory2Icon
                 className={
-                  router.pathname.startsWith('/practiceproblems/')
+                  router.pathname.startsWith('/practiceproblems')
                     ? 'active'
                     : ''
                 }
@@ -217,7 +224,7 @@ export default function Layout({ children }) {
             <ListItemText
               primary="Pratice Problems"
               className={
-                router.pathname.startsWith('/practiceproblems/') ? 'active' : ''
+                router.pathname.startsWith('/practiceproblems') ? 'active' : ''
               }
             />
           </ListItem>
@@ -247,6 +254,20 @@ export default function Layout({ children }) {
             <ListItemText
               className={currentRoute === '/discussion' ? 'active' : ''}
               primary="Discussion"
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/idecompiler">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <CodeIcon
+                className={currentRoute === '/idecompiler' ? 'active' : ''}
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={currentRoute === '/idecompiler' ? 'active' : ''}
+              primary="Coding Playground"
             />
           </ListItem>
         </Link>

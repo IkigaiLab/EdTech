@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
@@ -16,8 +16,33 @@ import Layout from '../components/layout';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AllPosts from '../components/Discussion/AllPosts';
 import MyPosts from '../components/Discussion/MyPosts';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPost } from '../Utils/features/addPostSlice';
+import { AuthContext } from '../firebase/auth';
+import { getAllPosts } from '../Utils/features/allPostsSlice';
 
 const discussion = () => {
+  const dispatch = useDispatch();
+  const { addpost, loadings } = useSelector((state) => state.post);
+  const { user, loading } = useContext(AuthContext);
+  const [text, settext] = useState('');
+
+  const addingPost = async () => {
+    const userid = user.uid;
+    // console.log(userid, text);
+    var regExp = /[a-zA-Z]/i;
+    if (regExp.test(text) === true) {
+      const res = await dispatch(addPost({ text, userid }));
+      console.log(res);
+      if (res) {
+        dispatch(getAllPosts());
+      }
+      settext('');
+    } else {
+      alert('field should not be empty');
+    }
+  };
+
   return (
     <Layout>
       <Grid
@@ -37,7 +62,7 @@ const discussion = () => {
                 Create a Post
               </Typography>
               <Card sx={{ p: 3 }}>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ pt: 2 }}>
                   <Grid
                     item
                     lg={1}
@@ -72,12 +97,16 @@ const discussion = () => {
                       variant="outlined"
                       fullWidth
                       size="small"
+                      value={text}
+                      onChange={(e) => settext(e.target.value)}
                     />
                   </Grid>
                 </Grid>
 
                 <Box textAlign="right" sx={{ mt: 2 }}>
-                  <Button variant="contained">Post</Button>
+                  <Button variant="contained" onClick={addingPost}>
+                    Post
+                  </Button>
                 </Box>
               </Card>
 
@@ -85,7 +114,7 @@ const discussion = () => {
             </Grid>
             <Grid item lg={4} md={4} xs={12}>
               <Typography variant="h5" sx={{ mb: 3 }}>
-                Your Posts
+                Your Latest Posts
               </Typography>
               <MyPosts />
             </Grid>

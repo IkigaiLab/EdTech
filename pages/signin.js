@@ -15,6 +15,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  getAdditionalUserInfo,
 } from 'firebase/auth';
 import { getFirestore, collection, setDoc, doc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
@@ -82,23 +83,27 @@ const Signin = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-        // The signed-in user info.
-        // const user = collection(db, 'users');
-        // return setDoc(doc(user, result.user.uid), {
-        //   name: result.user.displayName,
-        //   email: result.user.email,
-        //   courses: [],
-        // });
-        // ...
+        const details = getAdditionalUserInfo(result);
+        console.log(details);
+        console.log(details.isNewUser);
+        if (details.isNewUser != false) {
+          const user = collection(db, 'users');
+          return setDoc(doc(user, result.user.uid), {
+            name: result.user.displayName,
+            email: result.user.email,
+            courses: [],
+            tracks: [],
+            practiceproblems: [],
+          });
+        }
+        // console.log('signin successful');
+        // router.push('/dashboard');
+      })
+      .then(() => {
         console.log('signin successful');
 
         router.push('/dashboard');
       })
-      // .then(() => {
-      //   console.log('signin successful');
-
-      //   router.push('/dashboard');
-      // })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
