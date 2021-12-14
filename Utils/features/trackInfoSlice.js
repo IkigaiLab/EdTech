@@ -44,14 +44,7 @@ export const trackEnrolment = createAsyncThunk(
     const docRefer = doc(db, 'tracks', trackid);
     const querySnap = await getDoc(docRefer);
     console.log(querySnap.data());
-
-    for (let i = 0; i < querySnap.data().Days.length; i++) {
-      console.log(querySnap.data().Days[i]);
-      for (let j = 0; j < querySnap.data().Days[i].submodules.length; j++) {
-        const query = await getDoc(querySnap.data().Days[i].submodules[j]);
-        console.log(query.data());
-      }
-    }
+    console.log(querySnap.data().name);
 
     if (docRef) {
       const querySnapshot = await getDoc(docRef);
@@ -59,8 +52,8 @@ export const trackEnrolment = createAsyncThunk(
       if (querySnapshot.data().tracks.length > 0) {
         console.log('length is not zero');
         let flag = 0;
-        querySnapshot.data().tracks.map((id) => {
-          if (id === trackid) {
+        querySnapshot.data().tracks.map((item) => {
+          if (item.id === trackid) {
             console.log('already enrolled');
             flag = 1;
           }
@@ -68,14 +61,34 @@ export const trackEnrolment = createAsyncThunk(
         if (flag != 0) {
           return 'already enrolled';
         } else {
-          await updateDoc(docRef, {
-            tracks: arrayUnion(trackid),
-          });
           return 'successful';
         }
       } else {
+        const trackData = [];
+        const daywisemodulesData = [];
+        let modulessubtopicData = [];
+        for (let i = 0; i < querySnap.data().Days.length; i++) {
+          console.log(querySnap.data().Days[i]);
+          modulessubtopicData = [];
+          for (let j = 0; j < querySnap.data().Days[i].submodules.length; j++) {
+            const query = await getDoc(querySnap.data().Days[i].submodules[j]);
+            console.log(query.data());
+            const querys = query.data();
+            modulessubtopicData.push({ id: query.id, ...querys });
+          }
+          console.log(modulessubtopicData);
+          daywisemodulesData.push({ submodules: modulessubtopicData });
+        }
+        console.log(modulessubtopicData);
+        console.log(daywisemodulesData);
+        trackData.push({
+          id: trackid,
+          name: querySnap.data().name,
+          Days: daywisemodulesData,
+        });
+        console.log(trackData);
         await updateDoc(docRef, {
-          tracks: arrayUnion(trackid),
+          tracks: trackData,
         });
         return 'successful';
       }

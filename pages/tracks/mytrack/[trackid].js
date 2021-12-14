@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -23,8 +23,30 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { getMyTrackById } from '../../../Utils/features/myTrackSlice';
+import { AuthContext } from '../../../firebase/auth';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Tracks = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { user, loading } = useContext(AuthContext);
+  const trackid = router.query.trackid;
+  const { mytrackbyid, loadings } = useSelector((state) => state.allmytracks);
+
+  useEffect(() => {
+    if (!trackid || !user) {
+      return;
+    }
+    const userid = user?.uid;
+    dispatch(getMyTrackById({ trackid, userid }));
+  }, [trackid, user]);
+
+  const statusHandle = (submoduleid, topicid) => {
+    console.log('Ids :', submoduleid, topicid);
+  };
+
   return (
     <Layout>
       <Grid
@@ -41,70 +63,86 @@ const Tracks = () => {
               <Typography variant="h6" sx={{ mb: 3 }}>
                 Assigned Tasks/Activity Weekwise
               </Typography>
-              {[1, 2, 3, 4, 5, 6].map((index) => (
+              {mytrackbyid.map((item, index) => (
                 <Accordion key={index}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <Typography>week {index}</Typography>
+                    <Typography>Day {index + 1}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {[1, 2, 3, 4, 5, 6, 7].map((index) => (
+                    {item.submodules.map((item, index) => (
                       <Accordion key={index}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
-                          <Typography>Day {index}</Typography>
+                          <Typography>{item.name}</Typography>
                         </AccordionSummary>
+
                         <AccordionDetails>
-                          <Grid container>
-                            <Grid
-                              item
-                              lg={6}
-                              md={6}
-                              xs={12}
-                              sx={{ display: 'flex', alignItems: 'center' }}
-                            >
-                              Video to watch
-                            </Grid>
-                            <Grid item lg={6} md={6} xs={12}>
-                              <Link
-                                rel="noreferrer"
-                                target="_blank"
-                                href="https://www.youtube.com/watch?v=gMoJIH0prL4&list=RDQMGLFlZrEFhvY&index=4"
+                          {item.topics.map((items, index) => (
+                            <Accordion key={index}>
+                              <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
                               >
-                                <Typography sx={{ overflowWrap: 'break-word' }}>
-                                  https://www.youtube.com/watch?v=gMoJIH0prL4&list=RDQMGLFlZrEFhvY&index=4
-                                </Typography>
-                              </Link>
-                            </Grid>
-                          </Grid>
-                          <Grid container sx={{ mt: 2 }}>
-                            <Grid
-                              item
-                              lg={6}
-                              md={6}
-                              xs={12}
-                              sx={{ display: 'flex', alignItems: 'center' }}
-                            >
-                              Read article
-                            </Grid>
-                            <Grid item lg={6} md={6} xs={12}>
-                              <Link
-                                rel="noreferrer"
-                                target="_blank"
-                                href="https://hackernoon.com/what-on-earth-is-data-science-eb1237d8cb37"
-                              >
-                                <Typography sx={{ overflowWrap: 'break-word' }}>
-                                  https://hackernoon.com/what-on-earth-is-data-science-eb1237d8cb37
-                                </Typography>
-                              </Link>
-                            </Grid>
-                          </Grid>
+                                <Typography>{items.name}</Typography>
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                <Grid container>
+                                  <Grid
+                                    item
+                                    lg={6}
+                                    md={6}
+                                    xs={12}
+                                    sx={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    Status :{' '}
+                                    {items.status === false ? (
+                                      <>False</>
+                                    ) : (
+                                      <>True</>
+                                    )}
+                                  </Grid>
+                                  <Grid
+                                    item
+                                    lg={6}
+                                    md={6}
+                                    xs={12}
+                                    sx={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'flex-end',
+                                    }}
+                                  >
+                                    <Button
+                                      variant="contained"
+                                      onClick={() => {
+                                        statusHandle(item.id, items.id);
+                                      }}
+                                    >
+                                      Mark as true
+                                    </Button>
+                                    <Button
+                                      variant="contained"
+                                      color="redish"
+                                      sx={{ ml: 3, color: 'white' }}
+                                    >
+                                      Schedule Session
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              </AccordionDetails>
+                            </Accordion>
+                          ))}
                         </AccordionDetails>
                       </Accordion>
                     ))}

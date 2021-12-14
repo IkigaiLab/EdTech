@@ -46,9 +46,9 @@ export default function Layout({ children }) {
       redish: {
         main: '#c41d1d',
       },
-      greenish:{
-        main: "#10ed2a"
-      }
+      greenish: {
+        main: '#10ed2a',
+      },
     },
   });
 
@@ -258,7 +258,7 @@ export default function Layout({ children }) {
           </ListItem>
         </Link>
 
-        <Link href="/idecompiler">
+        {/* <Link href="/idecompiler">
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <CodeIcon
@@ -270,7 +270,7 @@ export default function Layout({ children }) {
               primary="Coding Playground"
             />
           </ListItem>
-        </Link>
+        </Link> */}
       </List>
     </div>
   );
