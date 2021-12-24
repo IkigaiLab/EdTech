@@ -18,9 +18,9 @@ import { useDispatch, useSelector } from 'react-redux';
 const Peopletofollow = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch();
-  }, []);
+  // useEffect(() => {
+  //   dispatch();
+  // }, []);
 
   return (
     <Card sx={{ p: 2, mt: 5, borderRadius: '10px' }}>
