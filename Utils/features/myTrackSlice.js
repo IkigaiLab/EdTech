@@ -110,6 +110,92 @@ export const getMyTrackById = createAsyncThunk(
   }
 );
 
+export const setSubmoduleTopicStatus = createAsyncThunk(
+  'tracks/setSubmoduleTopicStatus',
+  async (vardata) => {
+    const { submodulesid, topicsid, trackid, userid } = vardata;
+    console.log(submodulesid, topicsid, trackid, userid);
+    const allTracks = [];
+    const trackData = [];
+    let name = '';
+    const docRef = doc(db, 'users', userid);
+    const querySnapshots = await getDoc(docRef);
+    console.log(querySnapshots.data().tracks);
+
+    for (let i = 0; i < querySnapshots.data().tracks.length; i++) {
+      if (querySnapshots.data().tracks[i].id === trackid) {
+        name = querySnapshots.data().tracks[i].name;
+        allTracks.push(...querySnapshots.data().tracks[i].Days);
+        console.log('match');
+        console.log(querySnapshots.data().tracks[i].Days);
+        for (let j = 0; j < querySnapshots.data().tracks[i].Days.length; j++) {
+          console.log(querySnapshots.data().tracks[i].Days[j].submodules);
+          for (
+            let k = 0;
+            k < querySnapshots.data().tracks[i].Days[j].submodules.length;
+            k++
+          ) {
+            console.log(
+              querySnapshots.data().tracks[i].Days[j].submodules[k].topics
+            );
+            console.log(
+              'Submodule id :',
+              querySnapshots.data().tracks[i].Days[j].submodules[k].id
+            );
+            let submoduleid =
+              querySnapshots.data().tracks[i].Days[j].submodules[k].id;
+            for (
+              let m = 0;
+              m <
+              querySnapshots.data().tracks[i].Days[j].submodules[k].topics
+                .length;
+              m++
+            ) {
+              console.log(
+                'Topics id :',
+                querySnapshots.data().tracks[i].Days[j].submodules[k].topics[m]
+                  .id
+              );
+              let topicid =
+                querySnapshots.data().tracks[i].Days[j].submodules[k].topics[m]
+                  .id;
+              const querySnapshoting = await getDoc(
+                doc(db, `finalsubmodules/${submoduleid}/topics`, topicid)
+              );
+              if (allTracks[j].submodules[k].id === submodulesid) {
+                console.log('id matched');
+                if (allTracks[j].submodules[k].topics[m].id === topicsid) {
+                  console.log('topic is matched');
+                  allTracks[j].submodules[k].topics[m].status = true;
+                }
+              }
+              if (allTracks[j].submodules[k].id === submoduleid) {
+                // alert("id matched")
+                if (allTracks[j].submodules[k].topics[m].id === topicid) {
+                  // alert("topic is matched")
+                  allTracks[j].submodules[k].topics[m].name =
+                    querySnapshoting.data().name;
+                }
+              }
+              console.log(querySnapshoting.data());
+            }
+          }
+        }
+      }
+    }
+    console.log(allTracks);
+    trackData.push({
+      id: trackid,
+      name: name,
+      Days: allTracks,
+    });
+    console.log(trackData);
+    await updateDoc(docRef, {
+      tracks: trackData,
+    });
+  }
+);
+
 export const myTrackSlice = createSlice({
   name: 'allmytracks',
   initialState,
@@ -134,6 +220,16 @@ export const myTrackSlice = createSlice({
       state.mytrackbyid = payload;
     },
     [getMyTrackById.rejected]: (state) => {
+      state.loadings = false;
+    },
+
+    [setSubmoduleTopicStatus.pending]: (state) => {
+      state.loadings = true;
+    },
+    [setSubmoduleTopicStatus.fulfilled]: (state) => {
+      state.loadings = false;
+    },
+    [setSubmoduleTopicStatus.rejected]: (state) => {
       state.loadings = false;
     },
   },

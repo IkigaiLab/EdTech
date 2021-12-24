@@ -3,6 +3,7 @@ import { addCommentReducer } from '../features/addCommentSlice';
 import { addLikeReducer } from '../features/addLikeSlice';
 import { addPostReducer } from '../features/addPostSlice';
 import { allPostsReducer } from '../features/allPostsSlice';
+import { peopletofollowReducer } from '../features/community/peopletofollowslice';
 import counterReducer from '../features/counterSlice';
 import { deletePostReducer } from '../features/deletePostSlice';
 import { exploreTrackReducer } from '../features/exploreTrackSlice';
@@ -26,5 +27,6 @@ export const store = configureStore({
     deletepost: deletePostReducer,
     problems: practiceproblemsReducer,
     singlepracticeproblem: practiceproblemideSliceReducer,
+    followpeople: peopletofollowReducer,
   },
 });

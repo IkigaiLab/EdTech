@@ -94,6 +94,8 @@ const Signin = () => {
             courses: [],
             tracks: [],
             practiceproblems: [],
+            followers: [],
+            following: [],
           });
         }
         // console.log('signin successful');

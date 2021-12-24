@@ -14,6 +14,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ExploreIcon from '@mui/icons-material/Explore';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
@@ -114,6 +115,22 @@ export default function Layout({ children }) {
             <ListItemText
               className={currentRoute === '/dashboard' ? 'active' : ''}
               primary="Dashboard"
+            />
+          </ListItem>
+        </Link>
+
+        <Link href="/profile">
+          <ListItem button sx={{ color: '#c9c7c7' }}>
+            <ListItemIcon sx={{ color: '#c9c7c7' }}>
+              <PersonIcon
+                className={
+                  router.pathname.startsWith('/profile') ? 'active' : ''
+                }
+              />
+            </ListItemIcon>
+            <ListItemText
+              className={router.pathname.startsWith('/profile') ? 'active' : ''}
+              primary="Profile"
             />
           </ListItem>
         </Link>
@@ -244,16 +261,20 @@ export default function Layout({ children }) {
           </ListItem>
         </Link>
 
-        <Link href="/discussion">
+        <Link href="/community/myprofile">
           <ListItem button sx={{ color: '#c9c7c7' }}>
             <ListItemIcon sx={{ color: '#c9c7c7' }}>
               <ForumIcon
-                className={currentRoute === '/discussion' ? 'active' : ''}
+                className={
+                  router.pathname.startsWith('/community/') ? 'active' : ''
+                }
               />
             </ListItemIcon>
             <ListItemText
-              className={currentRoute === '/discussion' ? 'active' : ''}
-              primary="Discussion"
+              className={
+                router.pathname.startsWith('/community/') ? 'active' : ''
+              }
+              primary="Community"
             />
           </ListItem>
         </Link>
@@ -361,11 +382,19 @@ export default function Layout({ children }) {
               }}
             >
               <Card sx={{ height: '11vh' }}>
-                <Grid container sx={{ p: 2 }} alignItems="center">
+                <Grid container sx={{ p: 1 }} alignItems="center">
                   <Grid item xs={6} lg={9} md={8}>
                     <Grid container alignItems="center">
                       <Grid item>
-                        <Avatar />
+                        <IconButton
+                          sx={
+                            {
+                              // filter: 'drop-shadow(0px 2px 3px rgba(0,0,0,0.32))',
+                            }
+                          }
+                        >
+                          <Avatar src={user?.photoURL} />
+                        </IconButton>
                       </Grid>
                       <Grid item>
                         <Button variant="text" onClick={signout}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import NextLink from 'next/link';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -39,6 +39,7 @@ const auth = getAuth();
 
 const Signup = () => {
   const { user, loading } = useContext(AuthContext);
+  const [error, seterror] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -79,6 +80,8 @@ const Signup = () => {
           courses: [],
           tracks: [],
           practiceproblems: [],
+          followers: [],
+          following: [],
         });
         return updateProfile(auth.currentUser, {
           displayName: name,
@@ -92,6 +95,7 @@ const Signup = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        seterror(error.code);
         console.log(errorCode);
         console.log(errorMessage);
         // ..
@@ -170,7 +174,7 @@ const Signup = () => {
           >
             <img
               src="/loginanimate.svg"
-              height="550px"
+              height="570px"
               width="480px"
               style={{ maxWidth: 'calc(100% - 20px)' }}
             />
@@ -234,6 +238,9 @@ const Signup = () => {
                 sx={{ mt: 1 }}
                 size="small"
               />
+              <Typography textAlign="left" sx={{ m: 0, color: 'red' }}>
+                {error ? error.split('/')[1] : ''}
+              </Typography>
               <Box textAlign="center">
                 <Button
                   type="submit"

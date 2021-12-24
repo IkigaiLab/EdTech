@@ -34,15 +34,18 @@ export const AuthProvider = ({ children }) => {
         setUser(userfetch);
         // getData(userfetch);
         // getAllCourse();
+        setusername(userfetch.displayName);
         setloading(false);
       } else {
         setloading(false);
       }
     });
-  }, []);
+  }, [username, user]);
 
   return (
-    <AuthContext.Provider value={{ user, username, setUser, loading }}>
+    <AuthContext.Provider
+      value={{ user, username, setusername, setUser, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

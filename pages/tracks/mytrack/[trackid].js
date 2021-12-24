@@ -23,10 +23,15 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getMyTrackById } from '../../../Utils/features/myTrackSlice';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import {
+  getMyTrackById,
+  setSubmoduleTopicStatus,
+} from '../../../Utils/features/myTrackSlice';
 import { AuthContext } from '../../../firebase/auth';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+const Loader = () => <div className="loader"></div>;
 
 const Tracks = () => {
   const router = useRouter();
@@ -43,8 +48,15 @@ const Tracks = () => {
     dispatch(getMyTrackById({ trackid, userid }));
   }, [trackid, user]);
 
-  const statusHandle = (submoduleid, topicid) => {
-    console.log('Ids :', submoduleid, topicid);
+  const statusHandle = async (submodulesid, topicsid) => {
+    const userid = user?.uid;
+    // console.log('Ids :', submoduleid, topicid, trackid, userid);
+    const res = await dispatch(
+      setSubmoduleTopicStatus({ submodulesid, topicsid, trackid, userid })
+    );
+    if (res) {
+      dispatch(getMyTrackById({ trackid, userid }));
+    }
   };
 
   return (
@@ -56,6 +68,13 @@ const Tracks = () => {
           mt: 5,
         }}
       >
+        {loadings ? (
+          <>
+            <Loader />
+          </>
+        ) : (
+          <></>
+        )}
         <Container maxWidth="lg" sx={{ mb: 3 }}>
           <Typography sx={{ fontSize: 27 }}>Data Science Track</Typography>
           <Grid container spacing={3}>
@@ -91,7 +110,20 @@ const Tracks = () => {
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
                               >
-                                <Typography>{items.name}</Typography>
+                                <Typography>
+                                  <Grid container>
+                                    <Grid item>{items.name}</Grid>
+                                    <Grid item sx={{ color: 'green' }}>
+                                      {items.status === true ? (
+                                        <div>
+                                          <CheckCircleOutlineIcon />
+                                        </div>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </Grid>
+                                  </Grid>
+                                </Typography>
                               </AccordionSummary>
                               <AccordionDetails>
                                 <Grid container>
@@ -123,21 +155,23 @@ const Tracks = () => {
                                       justifyContent: 'flex-end',
                                     }}
                                   >
-                                    <Button
-                                      variant="contained"
-                                      onClick={() => {
-                                        statusHandle(item.id, items.id);
-                                      }}
-                                    >
-                                      Mark as true
-                                    </Button>
-                                    <Button
-                                      variant="contained"
-                                      color="redish"
-                                      sx={{ ml: 3, color: 'white' }}
-                                    >
-                                      Schedule Session
-                                    </Button>
+                                    {items.status === false ? (
+                                      <Button
+                                        variant="contained"
+                                        onClick={() => {
+                                          statusHandle(item.id, items.id);
+                                        }}
+                                      >
+                                        Mark as Complete
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        variant="outlined"
+                                        color="greenish"
+                                      >
+                                        Completed <CheckCircleOutlineIcon />
+                                      </Button>
+                                    )}
                                   </Grid>
                                 </Grid>
                               </AccordionDetails>

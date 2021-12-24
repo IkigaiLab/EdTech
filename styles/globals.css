@@ -60,7 +60,14 @@ body {
   font-weight: 600;
 }
 
-.subactive {
+.sublinkactive {
   color: black;
   font-weight: bold;
+}
+
+.subactive {
+  color: #3422d6;
+  font-weight: bold;
+  border-bottom: 2px solid #3422d6;
+  padding-bottom: 5px;
 }
