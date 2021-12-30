@@ -18,25 +18,30 @@ import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
-import { AuthContext } from '../../firebase/auth';
+import { useRouter } from 'next/router';
 import { getAllPosts } from '../../Utils/features/allPostsSlice';
-import { deletePost } from '../../Utils/features/deletePostSlice';
 import { addLike } from '../../Utils/features/addLikeSlice';
+import { addComment } from '../../Utils/features/addCommentSlice';
+import { AuthContext } from '../../firebase/auth';
 import moment from 'moment';
 const Loader = () => <div className="loader"></div>;
 
-const MyPosts = () => {
+const UserPosts = () => {
   const dispatch = useDispatch();
   const { posts, loadings } = useSelector((state) => state.posts);
-  const { user, loading } = useContext(AuthContext);
+  const router = useRouter();
   const [comment, setcomment] = useState('');
+  const { user, loading } = useContext(AuthContext);
+  const userid = router.query.userid;
   let like = false;
 
   useEffect(() => {
+    if (!userid || user) {
+      return;
+    }
     dispatch(getAllPosts());
-  }, []);
+  }, [userid, user]);
 
   const checkLike = (items) => {
     if (items.userid === user?.uid) {
@@ -70,20 +75,13 @@ const MyPosts = () => {
     }
   };
 
-  const deletingPost = async (postid) => {
-    const res = await dispatch(deletePost(postid));
-    if (res) {
-      dispatch(getAllPosts());
-    }
-  };
-
   return (
     <>
       {loadings ? <Loader /> : <></>}
-      {posts.filter((post) => post.userid === user?.uid).length > 0 ? (
+      {posts.filter((post) => post.userid === userid).length > 0 ? (
         <>
           {posts
-            ?.filter((post) => post.userid === user?.uid)
+            ?.filter((post) => post.userid === userid)
             .slice(0, 3)
             .map((item, index) => (
               <Card sx={{ p: 3, mt: 3 }} key={index}>
@@ -136,19 +134,7 @@ const MyPosts = () => {
                       md={1}
                       xs={2}
                       sx={{ display: 'flex', justifyContent: 'flex-end' }}
-                    >
-                      {item.userid === user?.uid ? (
-                        <IconButton
-                          onClick={() => {
-                            deletingPost(item.id);
-                          }}
-                        >
-                          <DeleteIcon color="redish" />
-                        </IconButton>
-                      ) : (
-                        <></>
-                      )}
-                    </Grid>
+                    ></Grid>
                   </Grid>
                 </Grid>
                 <Typography sx={{ mt: 2 }}>{item.text}</Typography>
@@ -298,4 +284,4 @@ const MyPosts = () => {
   );
 };
 
-export default MyPosts;
+export default UserPosts;

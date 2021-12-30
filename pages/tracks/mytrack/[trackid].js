@@ -16,7 +16,16 @@ import {
   ListItemText,
   Collapse,
   Link,
+  IconButton,
+  AppBar,
+  Toolbar,
 } from '@mui/material';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Layout from '../../../components/layout';
 import Avatar from '@mui/material/Avatar';
 import Accordion from '@mui/material/Accordion';
@@ -48,19 +57,73 @@ const Tracks = () => {
     dispatch(getMyTrackById({ trackid, userid }));
   }, [trackid, user]);
 
-  const statusHandle = async (submodulesid, topicsid) => {
-    const userid = user?.uid;
-    // console.log('Ids :', submoduleid, topicid, trackid, userid);
-    const res = await dispatch(
-      setSubmoduleTopicStatus({ submodulesid, topicsid, trackid, userid })
-    );
-    if (res) {
-      dispatch(getMyTrackById({ trackid, userid }));
-    }
+  // const statusHandle = async (submodulesid, topicsid) => {
+  //   const userid = user?.uid;
+  //   console.log('Ids :', submoduleid, topicid, trackid, userid);
+  //   const res = await dispatch(
+  //     setSubmoduleTopicStatus({ submodulesid, topicsid, trackid, userid })
+  //   );
+  //   if (res) {
+  //     dispatch(getMyTrackById({ trackid, userid }));
+  //   }
+  // };
+
+  const [open, setOpen] = React.useState(false);
+  const [url, setUrl] = React.useState('');
+
+  const handleClickOpen = (link) => () => {
+    setUrl(link);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <Layout>
+      {/* pdf modal */}
+      <Dialog
+        sx={{
+          position: 'fixed',
+          width: '100%',
+          height: '100%',
+        }}
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="xl"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Reading Material
+            </Typography>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+              onClick={handleClose}
+            >
+              <CancelPresentationIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <iframe
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+          }}
+          src={url}
+        />
+      </Dialog>
+      {/* pdf modal */}
+
       <Grid
         container
         component="main"
@@ -89,31 +152,24 @@ const Tracks = () => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <Typography>Day {index + 1}</Typography>
+                    <Typography>
+                      Module {index + 1} : {item.name}
+                    </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {item.submodules.map((item, index) => (
+                    {item.topics.map((items, index) => (
                       <Accordion key={index}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
-                          <Typography>{item.name}</Typography>
-                        </AccordionSummary>
-
-                        <AccordionDetails>
-                          {item.topics.map((items, index) => (
-                            <Accordion key={index}>
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                              >
-                                <Typography>
-                                  <Grid container>
-                                    <Grid item>{items.name}</Grid>
-                                    <Grid item sx={{ color: 'green' }}>
+                          <Typography>
+                            <Grid container>
+                              <Grid item>
+                                {index + 1}. {items.topic.name}
+                              </Grid>
+                              {/* <Grid item sx={{ color: 'green' }}>
                                       {items.status === true ? (
                                         <div>
                                           <CheckCircleOutlineIcon />
@@ -121,62 +177,47 @@ const Tracks = () => {
                                       ) : (
                                         <></>
                                       )}
-                                    </Grid>
-                                  </Grid>
-                                </Typography>
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                <Grid container>
-                                  <Grid
-                                    item
-                                    lg={6}
-                                    md={6}
-                                    xs={12}
-                                    sx={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                    }}
-                                  >
-                                    Status :{' '}
-                                    {items.status === false ? (
-                                      <>False</>
-                                    ) : (
-                                      <>True</>
-                                    )}
-                                  </Grid>
-                                  <Grid
-                                    item
-                                    lg={6}
-                                    md={6}
-                                    xs={12}
-                                    sx={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'flex-end',
-                                    }}
-                                  >
-                                    {items.status === false ? (
-                                      <Button
-                                        variant="contained"
-                                        onClick={() => {
-                                          statusHandle(item.id, items.id);
-                                        }}
-                                      >
-                                        Mark as Complete
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        variant="outlined"
-                                        color="greenish"
-                                      >
-                                        Completed <CheckCircleOutlineIcon />
-                                      </Button>
-                                    )}
-                                  </Grid>
-                                </Grid>
-                              </AccordionDetails>
-                            </Accordion>
-                          ))}
+                                    </Grid> */}
+                            </Grid>
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container>
+                            <Grid
+                              item
+                              lg={6}
+                              md={6}
+                              xs={12}
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                            >
+                              {items.topic.type}
+                            </Grid>
+                            <Grid
+                              item
+                              lg={6}
+                              md={6}
+                              xs={12}
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                              }}
+                            >
+                              {/* <Typography sx={{ overflowWrap: 'break-word' }}>
+                                {items.topic.link}
+                                <iframe src="http://www.africau.edu/images/default/sample.pdf" />
+                              </Typography> */}
+                              <Button
+                                variant="outlined"
+                                onClick={handleClickOpen(items.topic.link)}
+                              >
+                                Read
+                              </Button>
+                            </Grid>
+                          </Grid>
                         </AccordionDetails>
                       </Accordion>
                     ))}

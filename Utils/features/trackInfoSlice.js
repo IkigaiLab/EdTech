@@ -34,6 +34,69 @@ export const getSpecificTrack = createAsyncThunk(
   }
 );
 
+// export const trackEnrolment = createAsyncThunk(
+//   'track/trackenrolment',
+//   async (data) => {
+//     const { trackid, userid } = data;
+//     console.log(trackid);
+//     console.log(userid);
+//     const docRef = doc(db, 'users', userid);
+//     const docRefer = doc(db, 'tracks', trackid);
+//     const querySnap = await getDoc(docRefer);
+//     console.log(querySnap.data());
+//     console.log(querySnap.data().name);
+
+//     if (docRef) {
+//       const querySnapshot = await getDoc(docRef);
+//       console.log(querySnapshot.data());
+//       if (querySnapshot.data().tracks.length > 0) {
+//         console.log('length is not zero');
+//         let flag = 0;
+//         querySnapshot.data().tracks.map((item) => {
+//           if (item.id === trackid) {
+//             console.log('already enrolled');
+//             flag = 1;
+//           }
+//         });
+//         if (flag != 0) {
+//           return 'already enrolled';
+//         } else {
+//           return 'successful';
+//         }
+//       } else {
+//         const trackData = [];
+//         const daywisemodulesData = [];
+//         let modulessubtopicData = [];
+//         for (let i = 0; i < querySnap.data().Days.length; i++) {
+//           console.log(querySnap.data().Days[i]);
+//           modulessubtopicData = [];
+//           for (let j = 0; j < querySnap.data().Days[i].submodules.length; j++) {
+//             const query = await getDoc(querySnap.data().Days[i].submodules[j]);
+//             console.log(query.data());
+//             const querys = query.data();
+//             modulessubtopicData.push({ id: query.id, ...querys });
+//           }
+//           console.log(modulessubtopicData);
+//           daywisemodulesData.push({ submodules: modulessubtopicData });
+//         }
+//         console.log(modulessubtopicData);
+//         console.log(daywisemodulesData);
+//         trackData.push({
+//           id: trackid,
+//           name: querySnap.data().name,
+//           Days: daywisemodulesData,
+//         });
+//         console.log(trackData);
+//         await updateDoc(docRef, {
+//           tracks: trackData,
+//         });
+//         return 'successful';
+//       }
+//     }
+//     return 'unsuccessful';
+//   }
+// );
+
 export const trackEnrolment = createAsyncThunk(
   'track/trackenrolment',
   async (data) => {
@@ -65,26 +128,25 @@ export const trackEnrolment = createAsyncThunk(
         }
       } else {
         const trackData = [];
-        const daywisemodulesData = [];
+        const moduleswiseData = [];
         let modulessubtopicData = [];
-        for (let i = 0; i < querySnap.data().Days.length; i++) {
-          console.log(querySnap.data().Days[i]);
+        for (let i = 0; i < querySnap.data().submodules.length; i++) {
+          console.log(querySnap.data().submodules[i]);
           modulessubtopicData = [];
-          for (let j = 0; j < querySnap.data().Days[i].submodules.length; j++) {
-            const query = await getDoc(querySnap.data().Days[i].submodules[j]);
-            console.log(query.data());
-            const querys = query.data();
-            modulessubtopicData.push({ id: query.id, ...querys });
-          }
+          const query = await getDoc(querySnap.data().submodules[i].submodule);
+          console.log(query.data());
+          console.log(query);
+          const querys = query.data();
+          modulessubtopicData.push({ id: query.id, ...querys });
           console.log(modulessubtopicData);
-          daywisemodulesData.push({ submodules: modulessubtopicData });
+          moduleswiseData.push(...modulessubtopicData);
         }
         console.log(modulessubtopicData);
-        console.log(daywisemodulesData);
+        console.log(moduleswiseData);
         trackData.push({
           id: trackid,
           name: querySnap.data().name,
-          Days: daywisemodulesData,
+          submodules: moduleswiseData,
         });
         console.log(trackData);
         await updateDoc(docRef, {

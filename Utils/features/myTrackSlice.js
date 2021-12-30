@@ -43,6 +43,73 @@ export const getAllMyTracks = createAsyncThunk(
   }
 );
 
+// export const getMyTrackById = createAsyncThunk(
+//   'tracks/getMyTrackById',
+//   async (vardata) => {
+//     const { trackid, userid } = vardata;
+//     const allTracks = [];
+//     const docRef = doc(db, 'users', userid);
+//     const querySnapshots = await getDoc(docRef);
+//     console.log(querySnapshots.data().tracks);
+
+//     for (let i = 0; i < querySnapshots.data().tracks.length; i++) {
+//       if (querySnapshots.data().tracks[i].id === trackid) {
+//         allTracks.push(...querySnapshots.data().tracks[i].Days);
+//         console.log('match');
+//         console.log(querySnapshots.data().tracks[i].Days);
+//         for (let j = 0; j < querySnapshots.data().tracks[i].Days.length; j++) {
+//           // console.log(querySnapshots.data().tracks[i].Days[j].submodules);
+//           for (
+//             let k = 0;
+//             k < querySnapshots.data().tracks[i].Days[j].submodules.length;
+//             k++
+//           ) {
+//             console.log(
+//               querySnapshots.data().tracks[i].Days[j].submodules[k].topics
+//             );
+//             console.log(
+//               'Submodule id :',
+//               querySnapshots.data().tracks[i].Days[j].submodules[k].id
+//             );
+//             let submoduleid =
+//               querySnapshots.data().tracks[i].Days[j].submodules[k].id;
+//             for (
+//               let m = 0;
+//               m <
+//               querySnapshots.data().tracks[i].Days[j].submodules[k].topics
+//                 .length;
+//               m++
+//             ) {
+//               console.log(
+//                 'Topics id :',
+//                 querySnapshots.data().tracks[i].Days[j].submodules[k].topics[m]
+//                   .id
+//               );
+//               let topocid =
+//                 querySnapshots.data().tracks[i].Days[j].submodules[k].topics[m]
+//                   .id;
+//               const querySnapshoting = await getDoc(
+//                 doc(db, `finalsubmodules/${submoduleid}/topics`, topocid)
+//               );
+//               if (allTracks[j].submodules[k].id === submoduleid) {
+//                 alert("id matched")
+//                 if (allTracks[j].submodules[k].topics[m].id === topocid) {
+//                   alert("topic is matched")
+//                   allTracks[j].submodules[k].topics[m].name =
+//                     querySnapshoting.data().name;
+//                 }
+//               }
+//               console.log(querySnapshoting.data());
+//             }
+//           }
+//         }
+//       }
+//     }
+//     console.log(allTracks);
+//     return allTracks;
+//   }
+// );
+
 export const getMyTrackById = createAsyncThunk(
   'tracks/getMyTrackById',
   async (vardata) => {
@@ -54,53 +121,38 @@ export const getMyTrackById = createAsyncThunk(
 
     for (let i = 0; i < querySnapshots.data().tracks.length; i++) {
       if (querySnapshots.data().tracks[i].id === trackid) {
-        allTracks.push(...querySnapshots.data().tracks[i].Days);
+        allTracks.push(...querySnapshots.data().tracks[i].submodules);
+        console.log(allTracks);
         console.log('match');
-        console.log(querySnapshots.data().tracks[i].Days);
-        for (let j = 0; j < querySnapshots.data().tracks[i].Days.length; j++) {
-          // console.log(querySnapshots.data().tracks[i].Days[j].submodules);
+        console.log(querySnapshots.data().tracks[i].submodules);
+        for (
+          let j = 0;
+          j < querySnapshots.data().tracks[i].submodules.length;
+          j++
+        ) {
+          console.log(querySnapshots.data().tracks[i].submodules[j]);
+
+          console.log(querySnapshots.data().tracks[i].submodules[j].topics);
+          let submodulestopicData = [];
           for (
-            let k = 0;
-            k < querySnapshots.data().tracks[i].Days[j].submodules.length;
-            k++
+            let m = 0;
+            m < querySnapshots.data().tracks[i].submodules[j].topics.length;
+            m++
           ) {
+            submodulestopicData = [];
             console.log(
-              querySnapshots.data().tracks[i].Days[j].submodules[k].topics
+              querySnapshots.data().tracks[i].submodules[j].topics[m].topic
             );
-            console.log(
-              'Submodule id :',
-              querySnapshots.data().tracks[i].Days[j].submodules[k].id
+            const query = await getDoc(
+              querySnapshots.data().tracks[i].submodules[j].topics[m].topic
             );
-            let submoduleid =
-              querySnapshots.data().tracks[i].Days[j].submodules[k].id;
-            for (
-              let m = 0;
-              m <
-              querySnapshots.data().tracks[i].Days[j].submodules[k].topics
-                .length;
-              m++
-            ) {
-              console.log(
-                'Topics id :',
-                querySnapshots.data().tracks[i].Days[j].submodules[k].topics[m]
-                  .id
-              );
-              let topocid =
-                querySnapshots.data().tracks[i].Days[j].submodules[k].topics[m]
-                  .id;
-              const querySnapshoting = await getDoc(
-                doc(db, `finalsubmodules/${submoduleid}/topics`, topocid)
-              );
-              if (allTracks[j].submodules[k].id === submoduleid) {
-                // alert("id matched")
-                if (allTracks[j].submodules[k].topics[m].id === topocid) {
-                  // alert("topic is matched")
-                  allTracks[j].submodules[k].topics[m].name =
-                    querySnapshoting.data().name;
-                }
-              }
-              console.log(querySnapshoting.data());
-            }
+            console.log(query.data());
+            const querys = query.data();
+            submodulestopicData.push({ id: query.id, ...querys });
+            console.log(submodulestopicData);
+            console.log(allTracks[i].topics[m].topic);
+
+            allTracks[i].topics[m].topic = query.data();
           }
         }
       }
@@ -170,9 +222,9 @@ export const setSubmoduleTopicStatus = createAsyncThunk(
                 }
               }
               if (allTracks[j].submodules[k].id === submoduleid) {
-                // alert("id matched")
+                alert('id matched');
                 if (allTracks[j].submodules[k].topics[m].id === topicid) {
-                  // alert("topic is matched")
+                  alert('topic is matched');
                   allTracks[j].submodules[k].topics[m].name =
                     querySnapshoting.data().name;
                 }

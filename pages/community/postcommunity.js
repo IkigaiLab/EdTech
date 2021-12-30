@@ -1,13 +1,16 @@
+import { Box } from '@mui/material';
 import React from 'react';
 import Layout from '../../components/Community/layout';
 import Discussion from '../discussion';
 
-const Socialfeed = () => {
+const PostCommunity = () => {
   return (
     <Layout>
-      <Discussion />
+      <Box sx={{ mt: 4 }}>
+        <Discussion />
+      </Box>
     </Layout>
   );
 };
 
-export default Socialfeed;
+export default PostCommunity;

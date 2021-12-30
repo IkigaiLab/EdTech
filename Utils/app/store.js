@@ -3,7 +3,10 @@ import { addCommentReducer } from '../features/addCommentSlice';
 import { addLikeReducer } from '../features/addLikeSlice';
 import { addPostReducer } from '../features/addPostSlice';
 import { allPostsReducer } from '../features/allPostsSlice';
+import { myprofileSliceReducer } from '../features/community/myprofileSlice';
 import { peopletofollowReducer } from '../features/community/peopletofollowslice';
+import { socialfeedSliceReducer } from '../features/community/socialfeedSlice';
+import { userprofileSliceReducer } from '../features/community/userprofileSlice';
 import counterReducer from '../features/counterSlice';
 import { deletePostReducer } from '../features/deletePostSlice';
 import { exploreTrackReducer } from '../features/exploreTrackSlice';
@@ -28,5 +31,8 @@ export const store = configureStore({
     problems: practiceproblemsReducer,
     singlepracticeproblem: practiceproblemideSliceReducer,
     followpeople: peopletofollowReducer,
+    userdatafollow: myprofileSliceReducer,
+    userprodata: userprofileSliceReducer,
+    personaliseposts: socialfeedSliceReducer,
   },
 });

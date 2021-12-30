@@ -30,10 +30,10 @@ const Layout = ({ children }) => {
         }}
       >
         <Container maxWidth="lg" sx={{ mb: 3 }}>
-          <Typography variant="h5">Community</Typography>
+          {/* <Typography variant="h5">Community</Typography> */}
           <Grid container spacing={3}>
             <Grid item lg={8} md={7}>
-              <Grid container sx={{ mt: 3 }}>
+              <Grid container sx={{ mt: 1 }}>
                 <Grid item lg={3} md={3} xs={4}>
                   <NextLink href="/community/myprofile" passHref>
                     <Link
@@ -88,7 +88,7 @@ const Layout = ({ children }) => {
               </Grid>
               {children}
             </Grid>
-            <Grid item lg={4} md={5}>
+            <Grid item lg={4} md={5} sx={{ mt: 5 }}>
               <People />
             </Grid>
           </Grid>

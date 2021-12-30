@@ -17,32 +17,80 @@ const initialState = {
   loadings: false,
 };
 
-export const followpeople = createAsyncThunk(
-  'people/followpeople',
-  async () => {
+export const tofollowpeople = createAsyncThunk(
+  'people/tofollowpeople',
+  async (userid) => {
     console.log('follow people');
-    // const { postid, userid } = vardata;
-    // console.log(new Date());
-    // const docRef = doc(db, 'Posts', postid);
-    // const querySnapshot = await getDoc(docRef);
-    // console.log(querySnapshot);
-    // console.log(querySnapshot.data().likes);
-    // let flag = 0;
-    // for (let i = 0; i < querySnapshot.data().likes.length; i++) {
-    //   if (querySnapshot.data().likes[i].userid === userid) {
-    //     flag = 1;
-    //   }
-    // }
-    // if (flag === 0) {
-    //   await updateDoc(docRef, {
-    //     likes: arrayUnion({ userid: userid }),
-    //   });
-    // } else {
-    //   await updateDoc(docRef, {
-    //     likes: arrayRemove({ userid: userid }),
-    //   });
-    // }
-    // return 'success';
+    const allusersData = [];
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    console.log(querySnapshot);
+    console.log(querySnapshot.docs.length);
+    for (const dataObj of querySnapshot.docs) {
+      // console.log(dataObj.data());
+      // console.log(dataObj.id);
+      // console.log(dataObj.data().name);
+      // console.log(dataObj.data().followers);
+      // console.log(dataObj.data().following);
+      allusersData.push({
+        userid: dataObj.id,
+        name: dataObj.data().name,
+        followers: dataObj.data().followers,
+        following: dataObj.data().following,
+      });
+    }
+    console.log(allusersData);
+    const userdata = allusersData.filter((user) => user.userid != userid);
+    const docRef = doc(db, 'users', userid);
+    const querySnapshoting = await getDoc(docRef);
+    console.log(querySnapshoting);
+    console.log(querySnapshoting.data().following);
+    const filteredUserData = [];
+    for (const dataObj1 of userdata) {
+      console.log(dataObj1);
+      for (const dataObj of querySnapshoting.data().following) {
+        if (dataObj1.userid === dataObj.userid) {
+          // alert('mached');
+          console.log(
+            filteredUserData.push(
+              ...userdata.filter((user) => user.userid === dataObj.userid)
+            )
+          );
+        }
+      }
+    }
+    console.log(filteredUserData);
+    console.log(userdata);
+    const filtered = userdata.filter(function (e) {
+      return this.indexOf(e) < 0;
+    }, filteredUserData);
+    console.log(filtered);
+
+    return filtered.sort(() => Math.random() - 0.5);
+  }
+);
+
+export const followbuttonpeople = createAsyncThunk(
+  'people/followbuttonpeople',
+  async (vardata) => {
+    const { userid, followuserid } = vardata;
+    // alert('followed.....' + userid + '........' + followuserid);
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    console.log(querySnapshot);
+    console.log(querySnapshot.docs.length);
+    const docRef = doc(db, 'users', userid);
+    for (const dataObj of querySnapshot.docs) {
+      if (dataObj.id === userid) {
+        await updateDoc(docRef, {
+          following: arrayUnion({ userid: followuserid }),
+        });
+        const docRefs = doc(db, 'users', followuserid);
+        await updateDoc(docRefs, {
+          followers: arrayUnion({ userid: userid }),
+        });
+      }
+    }
+    // console.log(allusersData);
+    // return allusersData;
   }
 );
 
@@ -51,15 +99,25 @@ export const peopletofollowSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [followpeople.pending]: (state) => {
+    [tofollowpeople.pending]: (state) => {
       state.loadings = true;
     },
-    [followpeople.fulfilled]: (state, { payload }) => {
+    [tofollowpeople.fulfilled]: (state, { payload }) => {
       state.loadings = false;
       state.followpeople = payload;
     },
-    [followpeople.rejected]: (state) => {
+    [tofollowpeople.rejected]: (state) => {
       state.loadings = false;
+    },
+
+    [followbuttonpeople.pending]: (state) => {
+      // state.loadings = true;
+    },
+    [followbuttonpeople.fulfilled]: (state) => {
+      // state.loadings = false;
+    },
+    [followbuttonpeople.rejected]: (state) => {
+      // state.loadings = false;
     },
   },
 });
