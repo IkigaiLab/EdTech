@@ -45,7 +45,7 @@ const discussion = () => {
 
   return (
     <>
-      <Card sx={{ p: 3, mt: 3 }}>
+      <Card sx={{ p: 3, mt: 3, borderRadius: '10px' }}>
         <Grid container spacing={2} sx={{ pt: 2 }}>
           <Grid
             item

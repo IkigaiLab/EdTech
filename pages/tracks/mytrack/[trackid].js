@@ -20,7 +20,9 @@ import {
   AppBar,
   Toolbar,
 } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -121,6 +123,26 @@ const Tracks = () => {
           }}
           src={url}
         />
+
+        {/* <object
+          data={url}
+          type="application/pdf"
+          frameBorder="0"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <embed
+            src="https://drive.google.com/file/d/1Hp1ARYpeUAfHjjox0meTfdBTLmgsileO/preview?usp=sharing"
+            style={{
+              display: 'block',
+              width: '100%',
+              height: '100%',
+            }}
+          />
+        </object> */}
       </Dialog>
       {/* pdf modal */}
 
@@ -146,19 +168,29 @@ const Tracks = () => {
                 Assigned Tasks/Activity Weekwise
               </Typography>
               {mytrackbyid.map((item, index) => (
-                <Accordion key={index}>
+                <Accordion
+                  key={index}
+                  sx={{ boxShadow: 'none', border: 'none' }}
+                >
                   <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    sx={{ backgroundColor: '#2F4CD4', color: 'white' }}
                   >
                     <Typography>
                       Module {index + 1} : {item.name}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
+                    <Typography sx={{ mt: 1, mb: 1 }}>
+                      All Topics ({item.topics.length})
+                    </Typography>
                     {item.topics.map((items, index) => (
-                      <Accordion key={index}>
+                      <Accordion
+                        key={index}
+                        sx={{ boxShadow: 'none', border: 'none' }}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel1a-content"
@@ -182,46 +214,81 @@ const Tracks = () => {
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <Grid container>
-                            <Grid
-                              item
-                              lg={6}
-                              md={6}
-                              xs={12}
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                              }}
+                          <Tooltip
+                            title="Read"
+                            componentsProps={{
+                              tooltip: {
+                                sx: {
+                                  bgcolor: '#db1140',
+                                  '& .MuiTooltip-arrow': {
+                                    color: '#db1140',
+                                  },
+                                },
+                              },
+                            }}
+                            placement="left"
+                            arrow
+                          >
+                            <Card
+                              onClick={handleClickOpen(items.topic.link)}
+                              sx={{ cursor: 'pointer' }}
+                              // elevation="4"
                             >
-                              {items.topic.type}
-                            </Grid>
-                            <Grid
-                              item
-                              lg={6}
-                              md={6}
-                              xs={12}
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'flex-end',
-                              }}
-                            >
-                              {/* <Typography sx={{ overflowWrap: 'break-word' }}>
+                              <CardContent>
+                                <Grid container>
+                                  <Grid
+                                    item
+                                    lg={6}
+                                    md={6}
+                                    xs={6}
+                                    sx={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <LibraryBooksOutlinedIcon
+                                      sx={{
+                                        height: '35px',
+                                        width: '35px',
+                                        pr: 1,
+                                      }}
+                                    />
+                                    {items.topic.type}
+                                  </Grid>
+                                  <Grid
+                                    item
+                                    lg={6}
+                                    md={6}
+                                    xs={6}
+                                    sx={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'flex-end',
+                                    }}
+                                  >
+                                    {/* <Typography sx={{ overflowWrap: 'break-word' }}>
                                 {items.topic.link}
                                 <iframe src="http://www.africau.edu/images/default/sample.pdf" />
                               </Typography> */}
-                              <Button
-                                variant="outlined"
-                                onClick={handleClickOpen(items.topic.link)}
-                              >
-                                Read
-                              </Button>
-                            </Grid>
-                          </Grid>
+                                    {/* <Button
+                                    variant="outlined"
+                                    onClick={handleClickOpen(items.topic.link)}
+                                  >
+                                    Read
+                                  </Button> */}
+                                    <Typography>
+                                      Duration: {items.topic.duration}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </CardContent>
+                            </Card>
+                          </Tooltip>
                         </AccordionDetails>
                       </Accordion>
                     ))}
                   </AccordionDetails>
+                  <Typography sx={{ mb: 2 }}></Typography>
                 </Accordion>
               ))}
             </Grid>

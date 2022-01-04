@@ -98,7 +98,7 @@ const AllPosts = () => {
       )}
 
       {post?.map((item, index) => (
-        <Card sx={{ p: 3, mt: 3 }} key={index}>
+        <Card sx={{ p: 3, mt: 3, borderRadius: '10px' }} key={index}>
           <Grid container spacing={2}>
             <Grid
               item

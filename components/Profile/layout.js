@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
       >
         <Container maxWidth="lg" sx={{ mb: 3 }}>
           <Grid container>
-            <Grid item lg={4}>
+            <Grid item lg={4} md={4}>
               <List>
                 <Link href="/profile">
                   <ListItem button sx={{ color: '#c9c7c7' }}>
@@ -78,7 +78,7 @@ const Layout = ({ children }) => {
                 </Link>
               </List>
             </Grid>
-            <Grid item lg={8}>
+            <Grid item lg={8} md={8}>
               {children}
             </Grid>
           </Grid>

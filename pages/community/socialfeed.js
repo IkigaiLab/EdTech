@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -33,6 +33,7 @@ const Loader = () => <div className="loader"></div>;
 const Socialfeed = () => {
   const dispatch = useDispatch();
   const { user } = useContext(AuthContext);
+  const [comment, setcomment] = useState('');
   let like = false;
   const router = useRouter();
   const { personaliseposts, loadings } = useSelector(
@@ -90,7 +91,7 @@ const Socialfeed = () => {
       {personaliseposts.length > 0 ? (
         <>
           {personaliseposts?.map((item, index) => (
-            <Card sx={{ p: 3, mt: 4 }} key={index}>
+            <Card sx={{ p: 3, mt: 4, borderRadius: '10px' }} key={index}>
               <Grid container spacing={2}>
                 <Grid
                   item

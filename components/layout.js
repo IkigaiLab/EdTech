@@ -476,14 +476,11 @@ export default function Layout({ children }) {
           sx={{
             flexGrow: 1,
             overflow: 'hidden',
-            // boxSizing: 'content-box',
-            // width: { sm: `calc(100% - ${drawerWidth}px)` },
             backgroundColor: '#F5F6FA',
           }}
         >
           <Toolbar />
           {children}
-          {/* <Container style={{ minHeight: '80vh' }}>{children}</Container> */}
         </Box>
       </Box>
     </ThemeProvider>
