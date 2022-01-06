@@ -381,7 +381,7 @@ export default function Layout({ children }) {
                 display: { xs: 'none', md: 'block', lg: 'block', xl: 'block' },
               }}
             >
-              <Card sx={{ height: '11vh' }}>
+              <Card>
                 <Grid container sx={{ p: 1 }} alignItems="center">
                   <Grid item xs={6} lg={9} md={8}>
                     <Grid container alignItems="center">
